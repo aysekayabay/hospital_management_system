@@ -32,11 +32,11 @@ VALUES
 -- Doctor tablosuna veri ekleme
 INSERT INTO Doctor (firstName, lastName, address, specialty, qualification, workingHours, clinicID, password)
 VALUES 
-    ('Dr. Robert', 'Johnson', 'Address6', 'Cardiologist', 'MD', '{"Monday": "9am-5pm", "Tuesday": "9am-5pm"}', 1, 'doctor1'),
-    ('Dr. Emily', 'Clark', 'Address7', 'Dermatologist', 'MD', '{"Wednesday": "10am-6pm", "Thursday": "10am-6pm"}', 2, 'doctor2'),
-    ('Dr. Michael', 'Williams', 'Address8', 'Pediatrician', 'MD', '{"Friday": "8am-4pm", "Saturday": "8am-12pm"}', 1, 'doctor3'),
-    ('Dr. Emma', 'Brown', 'Address9', 'Psychiatrist', 'MD', '{"Monday": "1pm-7pm", "Tuesday": "1pm-7pm"}', 2, 'doctor4'),
-    ('Dr. Sarah', 'Lee', 'Address10', 'Surgeon', 'MD', '{"Wednesday": "9am-3pm", "Thursday": "9am-3pm"}', 1, 'doctor5');
+    ('Robert', 'Johnson', 'Address6', 'Cardiologist', 'Dr.', '{"Monday": "9am-5pm", "Tuesday": "9am-5pm"}', 1, 'doctor1'),
+    ('Emily', 'Clark', 'Address7', 'Dermatologist', 'Dr.', '{"Wednesday": "10am-6pm", "Thursday": "10am-6pm"}', 2, 'doctor2'),
+    ('Michael', 'Williams', 'Address8', 'Pediatrician', 'Dr.', '{"Friday": "8am-4pm", "Saturday": "8am-12pm"}', 1, 'doctor3'),
+    ('Emma', 'Brown', 'Address9', 'Psychiatrist', 'Dr.', '{"Monday": "1pm-7pm", "Tuesday": "1pm-7pm"}', 2, 'doctor4'),
+    ('Sarah', 'Lee', 'Address10', 'Surgeon', 'Dr.', '{"Wednesday": "9am-3pm", "Thursday": "9am-3pm"}', 1, 'doctor5');
 
 -- Patient tablosuna veri ekleme
 INSERT INTO Patient (socialNumber, firstName, lastName, gender, address, birthDate, email, phone)
