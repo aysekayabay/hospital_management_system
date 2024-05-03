@@ -1,20 +1,20 @@
 CREATE TYPE StaffType AS ENUM ('treasurer', 'registar', 'information desk');
 
 CREATE TABLE InsuranceServer (
-	id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY START WITH 1,
 	name VARCHAR(25) NOT NULL,
 	peopleWithInsurance VARCHAR(25)[]
 );
 
 CREATE TABLE Policlinic (
-	id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY START WITH 1,
 	name VARCHAR(25) NOT NULL,
 	location VARCHAR(100) NOT NULL,
 	collabratedInsuranceServerID INT REFERENCES InsuranceServer(id)
 );
 
 CREATE TABLE Clinic (
-	id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY START WITH 1,
 	name VARCHAR(25) NOT NULL,
 	policlinicID INT REFERENCES Policlinic(id) NOT NULL
 );
@@ -50,7 +50,7 @@ CREATE TABLE Patient (
 );
 
 CREATE TABLE Payment (
-    id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY START WITH 1,
 	amount DOUBLE PRECISION NOT NULL,
 	paymentDate TIMESTAMP NOT NULL,
 	paymentMethod VARCHAR(25) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE Payment (
 );
 
 CREATE TABLE Appointment (
-	id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY START WITH 1,
 	appointmentDate TIMESTAMP NOT NULL,
 	doctorID VARCHAR(11) REFERENCES Doctor(id) NOT NULL,
 	clinicID INT REFERENCES Clinic(id) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE Appointment (
 );
 
 CREATE TABLE Treatment (
-	id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY START WITH 1,
 	diagnosis VARCHAR(50) NOT NULL,
 	prescription VARCHAR(255),
 	report VARCHAR(255) NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE Treatment (
 );
 
 CREATE TABLE MedicalProcedure (
-	id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY START WITH 1,
 	name VARCHAR(100) NOT NULL,
 	cost INT NOT NULL,
 	policlinicID INT REFERENCES Policlinic(id) NOT NULL
