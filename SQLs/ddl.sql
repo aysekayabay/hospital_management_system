@@ -26,6 +26,7 @@ CREATE TABLE Clinic (
 -- Staff tablosu
 CREATE TABLE Staff (
     id SERIAL PRIMARY KEY,
+    password VARCHAR(25) NOT NULL
     firstName VARCHAR(25) NOT NULL,
     lastName VARCHAR(25) NOT NULL,
     address VARCHAR(100) NOT NULL,
@@ -36,6 +37,7 @@ CREATE TABLE Staff (
 -- Doctor tablosu
 CREATE TABLE Doctor (
     id SERIAL PRIMARY KEY,
+    password VARCHAR(25) NOT NULL
     firstName VARCHAR(25) NOT NULL,
     lastName VARCHAR(25) NOT NULL,
     address VARCHAR(100) NOT NULL,
