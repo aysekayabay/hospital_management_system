@@ -1,38 +1,39 @@
 package com.example.hospital_management_system.entity;
 
 import jakarta.persistence.*;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-@Table(name="Appointment")
+@Table(name = "appointment")
 public class Appointment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date appointmentDate;
-
-    @Column(nullable = false)
-    private String doctorID;
+    @Column(name = "appointmentdate", nullable = false)
+    private Timestamp appointmentDate;
 
     @ManyToOne
-    @JoinColumn(name = "clinicID", nullable = false)
+    @JoinColumn(name = "doctorid")
+    private Doctor doctor;
+
+    @ManyToOne
+    @JoinColumn(name = "clinicid")
     private Clinic clinic;
 
     @ManyToOne
-    @JoinColumn(name = "patientsocialNumber", nullable = false)
+    @JoinColumn(name = "patientsocialnumber")
     private Patient patient;
 
     // Constructors, getters, setters
     public Appointment() {
     }
 
-    public Appointment(Date appointmentDate, String doctorID, Clinic clinic, Patient patient) {
+    public Appointment(Timestamp appointmentDate, Doctor doctorID, Clinic clinic, Patient patient) {
         this.appointmentDate = appointmentDate;
-        this.doctorID = doctorID;
+        this.doctor = doctorID;
         this.clinic = clinic;
         this.patient = patient;
     }
@@ -49,16 +50,16 @@ public class Appointment {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(Date appointmentDate) {
+    public void setAppointmentDate(Timestamp appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
-    public String getDoctorID() {
-        return doctorID;
+    public Doctor getDoctorID() {
+        return doctor;
     }
 
-    public void setDoctorID(String doctorID) {
-        this.doctorID = doctorID;
+    public void setDoctorID(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Clinic getClinic() {
@@ -82,9 +83,9 @@ public class Appointment {
         return "Appointment{" +
                 "id=" + id +
                 ", appointmentDate=" + appointmentDate +
-                ", doctorID='" + doctorID + '\'' +
-                ", clinic=" + clinic +
-                ", patient=" + patient +
+                ", doctor='" + (doctor != null ? doctor.getId() : null) + '\'' +
+                ", clinic=" + (clinic != null ? clinic.getId() : null) +
+                ", patient=" + (patient != null ? patient.getSocialNumber() : null) +
                 '}';
     }
-}
+} 

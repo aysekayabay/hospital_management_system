@@ -3,22 +3,22 @@ package com.example.hospital_management_system.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Policlinic")
+@Table(name = "policlinic")
 public class Policlinic {
-
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", length = 25, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "location", length = 100, nullable = false)
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "collabratedInsuranceServerID")
-    private InsuranceServer collabratedInsuranceServer;
+    @JoinColumn(name = "collaboratedinsuranceserverid")
+    private InsuranceServer collaboratedInsuranceServer;
 
     // Constructors, getters, setters
     public Policlinic() {
@@ -27,7 +27,7 @@ public class Policlinic {
     public Policlinic(String name, String location, InsuranceServer collabratedInsuranceServer) {
         this.name = name;
         this.location = location;
-        this.collabratedInsuranceServer = collabratedInsuranceServer;
+        this.collaboratedInsuranceServer = collabratedInsuranceServer;
     }
 
     public Long getId() {
@@ -55,11 +55,11 @@ public class Policlinic {
     }
 
     public InsuranceServer getCollabratedInsuranceServer() {
-        return collabratedInsuranceServer;
+        return collaboratedInsuranceServer;
     }
 
     public void setCollabratedInsuranceServer(InsuranceServer collabratedInsuranceServer) {
-        this.collabratedInsuranceServer = collabratedInsuranceServer;
+        this.collaboratedInsuranceServer = collabratedInsuranceServer;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class Policlinic {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
-                ", collabratedInsuranceServer=" + collabratedInsuranceServer +
+                ", collabratedInsuranceServer=" + collaboratedInsuranceServer +
                 '}';
     }
-}
+} 

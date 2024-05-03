@@ -1,35 +1,33 @@
 package com.example.hospital_management_system.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name="Payment")
+@Table(name = "payment")
 public class Payment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "amount", nullable = false)
     private double amount;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date paymentDate;
+    @Column(name = "paymentdate", nullable = false)
+    private Timestamp paymentDate;
 
-    @Column(nullable = false)
+    @Column(name = "paymentmethod", length = 25, nullable = false)
     private String paymentMethod;
 
-    @ManyToOne
-    @JoinColumn(name = "patientSocialNumber", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patientsocialnumber")
     private Patient patient;
 
     // Constructors, getters, setters
     public Payment() {
     }
 
-    public Payment(double amount, Date paymentDate, String paymentMethod, Patient patient) {
+    public Payment(double amount, Timestamp paymentDate, String paymentMethod, Patient patient) {
         this.amount = amount;
         this.paymentDate = paymentDate;
         this.paymentMethod = paymentMethod;
@@ -52,11 +50,11 @@ public class Payment {
         this.amount = amount;
     }
 
-    public Date getPaymentDate() {
+    public Timestamp getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(Timestamp paymentDate) {
         this.paymentDate = paymentDate;
     }
 
@@ -83,7 +81,8 @@ public class Payment {
                 ", amount=" + amount +
                 ", paymentDate=" + paymentDate +
                 ", paymentMethod='" + paymentMethod + '\'' +
-                ", patient=" + patient +
+                ", patient=" + (patient != null ? patient.getSocialNumber() : null) + // Sadece patient'ın ID'sini al
                 '}';
     }
+
 }

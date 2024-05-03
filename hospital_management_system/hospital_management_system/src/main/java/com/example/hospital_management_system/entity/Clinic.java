@@ -3,18 +3,17 @@ package com.example.hospital_management_system.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Clinic")
+@Table(name = "clinic")
 public class Clinic {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", length = 25, nullable = false)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "policlinicID", nullable = false)
+    @JoinColumn(name = "policlinicid")
     private Policlinic policlinic;
 
     // Constructors, getters, setters

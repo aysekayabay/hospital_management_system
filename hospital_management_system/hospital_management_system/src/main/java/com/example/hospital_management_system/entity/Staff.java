@@ -1,33 +1,40 @@
 package com.example.hospital_management_system.entity;
 
+import com.example.hospital_management_system.enums.StaffType;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Staff")
+@Table(name = "staff")
 public class Staff {
-
     @Id
-    @Column(length = 11)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "password", length = 25, nullable = false)
+    private String password;
+
+    @Column(name = "firstname", length = 25, nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "lastname", length = 25, nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(name = "address", length = 100, nullable = false)
     private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "policlinicID", nullable = false)
-    private Policlinic policlinic;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "stafftype", nullable = false)
+    private StaffType staffType;
 
+    @ManyToOne
+    @JoinColumn(name = "policlinicid")
+    private Policlinic policlinic;
     // Constructors, getters, setters
     public Staff() {
     }
 
-    public Staff(String id, String firstName, String lastName, String address, Policlinic policlinic) {
+    public Staff(Long id, String firstName, String lastName, String address, Policlinic policlinic) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,11 +42,11 @@ public class Staff {
         this.policlinic = policlinic;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -85,4 +92,4 @@ public class Staff {
                 ", policlinic=" + policlinic +
                 '}';
     }
-}
+} 

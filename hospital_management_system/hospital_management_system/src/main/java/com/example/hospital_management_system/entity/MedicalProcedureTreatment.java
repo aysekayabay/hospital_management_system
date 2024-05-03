@@ -5,18 +5,18 @@ import jakarta.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name="MedicalProcedure")
-@IdClass(MedicalProcedureTreatment.class)
+@Table(name = "medicalproceduretreatment")
+@IdClass(MedicalProcedureTreatmentId.class) // Define the primary key class
 public class MedicalProcedureTreatment implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "medicalProcedureID", referencedColumnName = "id")
+    @JoinColumn(name = "medicalprocedureid")
     private MedicalProcedure medicalProcedure;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "treatmentID", referencedColumnName = "id")
+    @JoinColumn(name = "treatmentid")
     private Treatment treatment;
 
     // Constructors, getters, setters
@@ -48,7 +48,7 @@ public class MedicalProcedureTreatment implements Serializable {
     public String toString() {
         return "MedicalProcedureTreatment{" +
                 "medicalProcedure=" + medicalProcedure +
-                ", treatment=" + treatment +
+                ", treatment=" + (treatment != null ? treatment.getId() : null) +
                 '}';
     }
-}
+} 

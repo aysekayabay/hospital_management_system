@@ -3,21 +3,20 @@ package com.example.hospital_management_system.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="MedicalProcedure")
+@Table(name = "medicalprocedure")
 public class MedicalProcedure {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "cost", nullable = false)
     private int cost;
 
     @ManyToOne
-    @JoinColumn(name = "policlinicID", nullable = false)
+    @JoinColumn(name = "policlinicid")
     private Policlinic policlinic;
 
     // Constructors, getters, setters
@@ -68,7 +67,7 @@ public class MedicalProcedure {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", cost=" + cost +
-                ", policlinic=" + policlinic +
+                ", policlinic=" + (policlinic != null ? policlinic.getId(): null) +
                 '}';
     }
-}
+} 

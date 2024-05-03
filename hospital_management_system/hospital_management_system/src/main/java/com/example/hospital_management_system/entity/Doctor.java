@@ -1,45 +1,48 @@
 package com.example.hospital_management_system.entity;
 
 import java.util.Map;
-
+import com.example.hospital_management_system.converter.*;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Doctor")
+@Table(name = "doctor")
 public class Doctor {
-
     @Id
-    @Column(length = 11)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "password", length = 25, nullable = false)
+    private String password;
+
+    @Column(name = "firstname", length = 25, nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "lastname", length = 25, nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(name = "address", length = 100, nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column(name = "specialty", length = 50, nullable = false)
     private String specialty;
 
-    @Column(nullable = false)
+    @Column(name = "qualification", length = 50, nullable = false)
     private String qualification;
 
-    @Lob
-    @Column(nullable = false)
-    private Map<String, int[]> workingHours;
-
+    @Convert(converter = JsonMapConverter.class)
+    @Column(name = "workinghours", nullable = false)
+    private Map<String, String> workingHours;
+    
+    
     @ManyToOne
-    @JoinColumn(name = "clinicID", nullable = false)
+    @JoinColumn(name = "clinicid")
     private Clinic clinic;
 
     // Constructors, getters, setters
     public Doctor() {
     }
 
-    public Doctor(String id, String firstName, String lastName, String address, String specialty, String qualification, Map<String, int[]> workingHours, Clinic clinic) {
+    public Doctor(Long id, String firstName, String lastName, String address, String specialty, String qualification, Map<String, String> workingHours, Clinic clinic) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,11 +53,11 @@ public class Doctor {
         this.clinic = clinic;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -98,11 +101,11 @@ public class Doctor {
         this.qualification = qualification;
     }
 
-    public Map<String, int[]>  getWorkingHours() {
+    public Map<String, String>  getWorkingHours() {
         return workingHours;
     }
 
-    public void setWorkingHours(Map<String, int[]>  workingHours) {
+    public void setWorkingHours(Map<String, String>  workingHours) {
         this.workingHours = workingHours;
     }
 

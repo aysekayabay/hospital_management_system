@@ -4,65 +4,65 @@ package com.example.hospital_management_system.entity;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name="Appointment")
+@Table(name = "treatment")
 public class Treatment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "diagnosis", length = 50, nullable = false)
     private String diagnosis;
 
-    @Column
+    @Column(name = "prescription", length = 255)
     private String prescription;
 
-    @Column(nullable = false)
+    @Column(name = "report", length = 255, nullable = false)
     private String report;
 
-    @Column(nullable = false)
+    @Column(name = "referralnote", length = 255, nullable = false)
     private String referralNote;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date treatmentDate;
+    @Column(name = "treatmentdate", nullable = false)
+    private Timestamp treatmentDate;
 
     @ManyToOne
-    @JoinColumn(name = "clinicID", nullable = false)
+    @JoinColumn(name = "clinicid")
     private Clinic clinic;
 
-    @Column(nullable = false)
-    private String doctorID;
+    @ManyToOne
+    @JoinColumn(name = "doctorid")
+    private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name = "paymentID", nullable = false)
+    @JoinColumn(name = "paymentid")
     private Payment payment;
 
     @ManyToOne
-    @JoinColumn(name = "appointmentID", nullable = false)
+    @JoinColumn(name = "appointmentid")
     private Appointment appointment;
 
     @ManyToOne
-    @JoinColumn(name = "patientsocialNumber", nullable = false)
+    @JoinColumn(name = "patientsocialnumber")
     private Patient patient;
 
-    @Column(nullable = false)
+    @Column(name = "treatmentduration", nullable = false)
     private Time treatmentDuration;
 
     // Constructors, getters, setters
     public Treatment() {
     }
 
-    public Treatment(String diagnosis, String prescription, String report, String referralNote, Date treatmentDate, Clinic clinic, String doctorID, Payment payment, Appointment appointment, Patient patient, Time treatmentDuration) {
+    public Treatment(String diagnosis, String prescription, String report, String referralNote, Timestamp treatmentDate, Clinic clinic, Doctor doctorID, Payment payment, Appointment appointment, Patient patient, Time treatmentDuration) {
         this.diagnosis = diagnosis;
         this.prescription = prescription;
         this.report = report;
         this.referralNote = referralNote;
         this.treatmentDate = treatmentDate;
         this.clinic = clinic;
-        this.doctorID = doctorID;
+        this.doctor = doctorID;
         this.payment = payment;
         this.appointment = appointment;
         this.patient = patient;
@@ -113,7 +113,7 @@ public class Treatment {
         return treatmentDate;
     }
 
-    public void setTreatmentDate(Date treatmentDate) {
+    public void setTreatmentDate(Timestamp treatmentDate) {
         this.treatmentDate = treatmentDate;
     }
 
@@ -125,12 +125,12 @@ public class Treatment {
         this.clinic = clinic;
     }
 
-    public String getDoctorID() {
-        return doctorID;
+    public Doctor getDoctorID() {
+        return doctor;
     }
 
-    public void setDoctorID(String doctorID) {
-        this.doctorID = doctorID;
+    public void setDoctorID(Doctor doctorID) {
+        this.doctor = doctorID;
     }
 
     public Payment getPayment() {
@@ -175,11 +175,11 @@ public class Treatment {
                 ", referralNote='" + referralNote + '\'' +
                 ", treatmentDate=" + treatmentDate +
                 ", clinic=" + clinic +
-                ", doctorID='" + doctorID + '\'' +
-                ", payment=" + payment +
-                ", appointment=" + appointment +
-                ", patient=" + patient +
+                ", doctor='" + (doctor != null ? doctor.getId() : null) + '\'' +
+                ", payment=" +  (payment != null ? payment.getId() : null) +
+                ", appointment=" + (appointment != null ? appointment.getId() : null) +
+                ", patient=" + (patient != null ? patient.getSocialNumber() : null) +
                 ", treatmentDuration=" + treatmentDuration +
                 '}';
     }
-}
+} 

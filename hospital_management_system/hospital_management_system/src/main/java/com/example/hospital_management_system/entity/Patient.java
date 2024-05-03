@@ -4,35 +4,32 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="Patient")
+@Table(name = "patient")
 public class Patient {
-
     @Id
-    @Column(length = 11)
+    @Column(name = "socialnumber", length = 11)
     private String socialNumber;
 
-    @Column(nullable = false)
+    @Column(name = "firstname", length = 25, nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "lastname", length = 25, nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(name = "gender", length = 25, nullable = false)
     private String gender;
 
-    @Column(nullable = false)
+    @Column(name = "address", length = 50, nullable = false)
     private String address;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "birthdate", nullable = false)
     private Date birthDate;
 
-    @Column(nullable = false)
+    @Column(name = "email", length = 25, nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 11)
+    @Column(name = "phone", length = 11, nullable = false)
     private String phone;
-
     // Constructors, getters, setters
     public Patient() {
     }
@@ -125,4 +122,4 @@ public class Patient {
                 ", phone='" + phone + '\'' +
                 '}';
     }
-}
+} 
