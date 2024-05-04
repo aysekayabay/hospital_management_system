@@ -1,7 +1,8 @@
 package com.example.hospital_management_system.entity;
 
+import java.sql.Date;
+
 import jakarta.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "patient")

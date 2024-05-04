@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "treatment")
@@ -55,18 +56,18 @@ public class Treatment {
     public Treatment() {
     }
 
-    public Treatment(String diagnosis, String prescription, String report, String referralNote, Timestamp treatmentDate, Clinic clinic, Doctor doctorID, Payment payment, Appointment appointment, Patient patient, Time treatmentDuration) {
+    public Treatment(String diagnosis, Timestamp treatmentDate, Clinic clinic, Doctor doctorID, Payment payment, Appointment appointment, Patient patient) {
         this.diagnosis = diagnosis;
-        this.prescription = prescription;
-        this.report = report;
-        this.referralNote = referralNote;
         this.treatmentDate = treatmentDate;
         this.clinic = clinic;
         this.doctor = doctorID;
         this.payment = payment;
         this.appointment = appointment;
         this.patient = patient;
-        this.treatmentDuration = treatmentDuration;
+        this.referralNote = null;
+        this.diagnosis = null;
+        this.prescription = null;
+        this.treatmentDuration = Time.valueOf(LocalTime.of(0, 30));
     }
 
     public Long getId() {

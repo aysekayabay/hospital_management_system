@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+
+import com.example.hospital_management_system.entity.Patient;
 import com.example.hospital_management_system.repository.*;
 import ui.LoginPage;
+import ui.ViewPatientAndAddRecordPage;
 
 @SpringBootApplication
 public class HospitalManagementSystemApplication implements CommandLineRunner {
@@ -42,7 +45,7 @@ public class HospitalManagementSystemApplication implements CommandLineRunner {
 		this.treatmentRepository = treatmentRepository;
 		this.medicalProcedureRepository = medicalProcedureRepository;
 		this.medicalProcedureTreatmentRepository = medicalProcedureTreatmentRepository;
-		this.hospitalManagementService = hospitalManagementService; // Servis sınıfını atayın
+		this.hospitalManagementService = hospitalManagementService; 
 	}
 
 	public static void main(String[] args) {
@@ -54,15 +57,15 @@ public class HospitalManagementSystemApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// Id'si 1 olan hastayı al
-        /*Patient patient = patientRepository.findBySocialNumber("12345678901");
+       Patient patient = hospitalManagementService.getPatientRepository().findBySocialNumber("12345678901");
         System.out.println("!!!!!!!!! " + patient.getFirstName());
         if (patient != null) {
             // UI'ı başlat ve hastayı gönder
-            ViewPatientAndAddRecordPage window = new ViewPatientAndAddRecordPage(patient);
-            window.getFrame().setVisible(true);
-        } */
+           // ViewPatientAndAddRecordPage window = new ViewPatientAndAddRecordPage(patient, doctor, appointment, hospitalManagementService);
+           // window.getFrame().setVisible(true);
+        } 
 
-    	LoginPage login = new LoginPage(hospitalManagementService);
-    	login.getFrame().setVisible(true);
+    	//LoginPage login = new LoginPage(hospitalManagementService);
+    	//login.getFrame().setVisible(true);
 	}
 }
