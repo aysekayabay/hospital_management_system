@@ -74,6 +74,14 @@ public class Staff {
         this.address = address;
     }
 
+    public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+    
     public Policlinic getPoliclinic() {
         return policlinic;
     }

@@ -92,8 +92,17 @@ public class Doctor {
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
     }
+    
+    
+    public String getPassword() {
+		return password;
+	}
 
-    public String getQualification() {
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getQualification() {
         return qualification;
     }
 
