@@ -1,6 +1,5 @@
 package ui;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,12 +9,10 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.hospital_management_system.HospitalManagementService;
 import com.example.hospital_management_system.entity.Doctor;
 import com.example.hospital_management_system.entity.Staff;
-import com.example.hospital_management_system.repository.DoctorRepository;
-import com.example.hospital_management_system.repository.StaffRepository;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -26,10 +23,8 @@ public class LoginPage {
 	private JFrame frame;
 	private JTextField login_id_txtArea;
 	private JTextField login_password_textArea;
-	
+	private HospitalManagementService hospitalManagementService;
 
-	private final DoctorRepository doctorRepository;
-	private final StaffRepository staffRepository;
 
 
 	/**
@@ -44,9 +39,8 @@ public class LoginPage {
 	 * Create the application.
 	 */
 	
-	public LoginPage(DoctorRepository doctorRepository,StaffRepository staffRepository) {
-		this.doctorRepository = doctorRepository;
-		this.staffRepository = staffRepository;
+	public LoginPage(HospitalManagementService hospitalManagementService) {
+		this.hospitalManagementService = hospitalManagementService;
 		initialize();
 	}
 
@@ -111,7 +105,7 @@ public class LoginPage {
 
 		        	if(user.equals("Dr")) {
 		        		Long id = Long.parseLong(username.substring(2,username.length()));
-		        		Doctor doctor = doctorRepository.findById(id).orElse(null);
+		        		Doctor doctor = hospitalManagementService.getDoctorRepository().findById(id).orElse(null);
 		        		if(doctor.getPassword().equals(password)) {
 		        			JOptionPane.showMessageDialog(null, "Doktor girişi başarılı!", "Başarılı", JOptionPane.ERROR_MESSAGE);
 		        		}else {
@@ -119,7 +113,7 @@ public class LoginPage {
 		        		}
 		        	}else if(user.equals("St")) {
 		        		Long id = Long.parseLong(username.substring(2,username.length()));
-		        		Staff staff = staffRepository.findById(id).orElse(null);
+		        		Staff staff = hospitalManagementService.getStaffRepository().findById(id).orElse(null);
 		        		if(staff.getPassword() == password) {
 		        			JOptionPane.showMessageDialog(null, "Staff girişi başarılı!", "Başarılı", JOptionPane.ERROR_MESSAGE);
 		        		}else {
