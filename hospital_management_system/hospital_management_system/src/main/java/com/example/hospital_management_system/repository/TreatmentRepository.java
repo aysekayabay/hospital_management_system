@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     List<Treatment> findByPatientSocialNumberOrderByTreatmentDateDesc(String socialNumber);
-    Optional<Treatment> findByPatientSocialNo(String social_no);
+    List<Treatment> findByPatientSocialNo(String social_no);
 }
