@@ -87,7 +87,7 @@ CREATE TABLE Treatment (
     treatmentDate TIMESTAMP NOT NULL,
     clinicID INT REFERENCES Clinic(id) NOT NULL,
     doctorID INT REFERENCES Doctor(id) NOT NULL,
-    paymentID INT REFERENCES Payment(id) NOT NULL,
+    paymentID INT REFERENCES Payment(id),
     appointmentID INT REFERENCES Appointment(id) NOT NULL,
     patientSocialNumber VARCHAR(11) REFERENCES Patient(socialNumber) NOT NULL,
     treatmentDuration TIME NOT NULL
