@@ -5,10 +5,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
-import com.example.hospital_management_system.entity.Patient;
+import com.example.hospital_management_system.entity.Doctor;
 import com.example.hospital_management_system.repository.*;
+
+import ui.DoctorPage;
 import ui.LoginPage;
-import ui.ViewPatientAndAddRecordPage;
 
 @SpringBootApplication
 public class HospitalManagementSystemApplication implements CommandLineRunner {
@@ -56,16 +57,18 @@ public class HospitalManagementSystemApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		// Id'si 1 olan hastayı al
-       Patient patient = hospitalManagementService.getPatientRepository().findBySocialNumber("12345678901");
-        System.out.println("!!!!!!!!! " + patient.getFirstName());
-        if (patient != null) {
-            // UI'ı başlat ve hastayı gönder
-           // ViewPatientAndAddRecordPage window = new ViewPatientAndAddRecordPage(patient, doctor, appointment, hospitalManagementService);
-           // window.getFrame().setVisible(true);
-        } 
+		
+		// Id'si 1 olan doktoru al
+//		long doctorId = 1L;
+//		String password = "doctor1";
+//        Doctor doctor = hospitalManagementService.getDoctorRepository().findByIdAndPassword(doctorId, password);
+//        if (doctor != null) {
+//            // UI'ı başlat ve doktoru gönder
+//           DoctorPage window = new DoctorPage(doctor, hospitalManagementService);
+//           window.getFrame().setVisible(true);
+//        } 
 
-    	//LoginPage login = new LoginPage(hospitalManagementService);
-    	//login.getFrame().setVisible(true);
+    	LoginPage login = new LoginPage(hospitalManagementService);
+    	login.getFrame().setVisible(true);
 	}
 }

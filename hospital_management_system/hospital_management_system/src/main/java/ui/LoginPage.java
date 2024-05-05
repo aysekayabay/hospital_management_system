@@ -108,6 +108,9 @@ public class LoginPage {
 		        		Doctor doctor = hospitalManagementService.getDoctorRepository().findById(id).orElse(null);
 		        		if(doctor.getPassword().equals(password)) {
 		        			JOptionPane.showMessageDialog(null, "Doktor girişi başarılı!", "Başarılı", JOptionPane.ERROR_MESSAGE);
+		        			DoctorPage window = new DoctorPage(doctor , hospitalManagementService);
+		        			window.getFrame().setVisible(true);
+		        			frame.dispose();
 		        		}else {
 		        			JOptionPane.showMessageDialog(null, "Id veya şifre hatalı!", "Hata", JOptionPane.ERROR_MESSAGE);
 		        		}
