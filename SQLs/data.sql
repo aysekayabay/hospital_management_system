@@ -31,10 +31,10 @@ VALUES
 -- Doctor tablosuna veri ekleme
 INSERT INTO Doctor (firstName, lastName, address, specialty, qualification, workingHours, clinicID, password)
 VALUES 
-   ('Ahmet', 'Yılmaz', 'İstanbul', 'Göz Doktoru', 'Uzm. Dr.', '{"Pazartesi": "09:00-17:00", "Salı": "09:00-17:00"}', 1, 'doctor1'),
+   ('Sinan', 'Engin', 'İstanbul', 'Göz Doktoru', 'Uzm. Dr.', '{"Pazartesi": "09:00-17:00", "Salı": "09:00-17:00"}', 1, 'doctor1'),
     ('İbrahim', 'Koral', 'İstanbul', 'Ürolog', 'Uzm. Dr.', '{"Çarşamba": "10:00-18:00", "Perşembe": "10:00-18:00"}', 2, 'doctor2'),
-    ('Mehmet', 'Demir', 'İstanbul', 'Ortopedi Uzmanı', 'Uzm. Dr.', '{"Cuma": "08:00-16:00", "Cumartesi": "08:00-12:00"}', 3, 'doctor3'),
-    ('Fatma', 'Arslan', 'İstanbul', 'Psikiyatrist', 'Uzm. Dr.', '{"Pazartesi": "13:00-19:00", "Salı": "13:00-19:00"}', 4, 'doctor4');
+    ('Mustafa', 'Uğurlu', 'İstanbul', 'Ortopedi Uzmanı', 'Uzm. Dr.', '{"Cuma": "08:00-16:00", "Cumartesi": "08:00-12:00"}', 3, 'doctor3'),
+    ('Selma', 'Alkış', 'İstanbul', 'Psikiyatrist', 'Uzm. Dr.', '{"Pazartesi": "13:00-19:00", "Salı": "13:00-19:00"}', 4, 'doctor4');
 
 -- Patient tablosuna veri ekleme
 INSERT INTO Patient (socialNumber, firstName, lastName, gender, address, birthDate, email, phone)
