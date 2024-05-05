@@ -20,6 +20,7 @@ import java.util.List;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import com.example.hospital_management_system.HospitalManagementService;
 import com.example.hospital_management_system.entity.Appointment;
@@ -38,6 +39,8 @@ class NonEditableModel extends DefaultTableModel {
      return false;  // This will make all cells in the table non-editable
  }
 }
+
+
 
 
 @Component
@@ -133,7 +136,7 @@ public class DoctorPage {
         calendar.set(Calendar.MILLISECOND, 0);
 
         // Set to yesterday for testing purposes
-        // calendar.add(Calendar.DATE, -1);
+        calendar.add(Calendar.DATE, -1);
         Date startDate = calendar.getTime();  // Start of today
 
         // Set to the end of yesterday for testing purposes
@@ -147,9 +150,14 @@ public class DoctorPage {
     private void displayAppointments() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); // Clear existing data
+        
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm"); // Format to display hour and minute
+        
         for (Appointment appointment : todaysAppointments) {
+            String formattedTime = timeFormat.format(appointment.getAppointmentDate()); // Format the date
+            
             model.addRow(new Object[]{
-                appointment.getAppointmentDate().toString(), // Assuming appointment date includes time
+                formattedTime, // Only hour and minute of the appointment
                 appointment.getPatient().getSocialNumber(),  // Assuming this is the patient ID
                 appointment.getPatient().getFirstName() + " " + appointment.getPatient().getLastName() // Patient full name
             });
