@@ -1,78 +1,96 @@
 -- InsuranceServer tablosuna veri ekleme
 INSERT INTO InsuranceServer (name, peopleWithInsurance)
 VALUES 
-    ('InsuranceCo1', ARRAY['John', 'Alice']),
-    ('InsuranceCo2', ARRAY['Bob', 'Eve']);
+    ('Sigorta Şirketi 1', ARRAY['123456789', '987654321', '111111111', '222222222', '333333333', '444444444', '555555555', '666666666', '777777777', '888888888']),
+    ('Sigorta Şirketi 2', ARRAY['456789123', '789123456', '999999999', '000000000', '121212121', '343434343', '565656565', '787878787', '909090909', '232323232']);
 
 -- Policlinic tablosuna veri ekleme
 INSERT INTO Policlinic (name, location, collaboratedInsuranceServerID)
 VALUES 
-    ('Policlinic1', 'Location1', 1),
-    ('Policlinic2', 'Location2', 2);
+    ('Sağlık Polikliniği', 'Merkez Mahallesi', 1),
+    ('Özel Tıp Merkezi', 'Göztepe Caddesi', 2);
 
 -- Clinic tablosuna veri ekleme
 INSERT INTO Clinic (name, policlinicID)
 VALUES 
-    ('Clinic1', 1),
-    ('Clinic2', 2),
-    ('Clinic3', 1),
-    ('Clinic4', 2),
-    ('Clinic5', 1);
+    ('Göz Kliniği', 1), 
+    ('Üroloji Kliniği', 1),
+    ('Ortopedi Kliniği', 1),
+    ('Psikiyatri Kliniği', 1);
 
 -- Staff tablosuna veri ekleme
 INSERT INTO Staff (firstName, lastName, address, staffType, policlinicID, password)
 VALUES 
-    ('John', 'Doe', 'Address1', 'treasurer', 1, 'password1'),
-    ('Alice', 'Smith', 'Address2', 'registar', 2, 'password2'),
-    ('Bob', 'Johnson', 'Address3', 'information desk', 1, 'password3'),
-    ('Eve', 'Clark', 'Address4', 'treasurer', 2, 'password4'),
-    ('Charlie', 'Brown', 'Address5', 'information desk', 1, 'password5');
-
-
+    ('Selim', 'Yılmaz', 'İstanbul', 'treasurer', 1, 'staff1'),
+    ('Hüseyin', 'Kaya', 'İstanbul', 'treasurer', 1, 'staff2'),
+    ('Yavuz', 'Kartal', 'İstanbul', 'registar', 1, 'staff3'),
+    ('Zeynep', 'Çelik', 'İstanbul', 'registar', 1, 'staff4'),
+    ('Ali', 'Yıldırım', 'İstanbul', 'information desk', 1, 'staff5'),
+    ('Selin', 'Koç', 'İstanbul', 'information desk', 1, 'staff6');
+	
 -- Doctor tablosuna veri ekleme
 INSERT INTO Doctor (firstName, lastName, address, specialty, qualification, workingHours, clinicID, password)
 VALUES 
-    ('Robert', 'Johnson', 'Address6', 'Cardiologist', 'Dr.', '{"Monday": "9am-5pm", "Tuesday": "9am-5pm"}', 1, 'doctor1'),
-    ('Emily', 'Clark', 'Address7', 'Dermatologist', 'Dr.', '{"Wednesday": "10am-6pm", "Thursday": "10am-6pm"}', 2, 'doctor2'),
-    ('Michael', 'Williams', 'Address8', 'Pediatrician', 'Dr.', '{"Friday": "8am-4pm", "Saturday": "8am-12pm"}', 1, 'doctor3'),
-    ('Emma', 'Brown', 'Address9', 'Psychiatrist', 'Dr.', '{"Monday": "1pm-7pm", "Tuesday": "1pm-7pm"}', 2, 'doctor4'),
-    ('Sarah', 'Lee', 'Address10', 'Surgeon', 'Dr.', '{"Wednesday": "9am-3pm", "Thursday": "9am-3pm"}', 1, 'doctor5');
+   ('Ahmet', 'Yılmaz', 'İstanbul', 'Göz Doktoru', 'Uzm. Dr.', '{"Pazartesi": "09:00-17:00", "Salı": "09:00-17:00"}', 1, 'doctor1'),
+    ('İbrahim', 'Kaya', 'İstanbul', 'Ürolog', 'Uzm. Dr.', '{"Çarşamba": "10:00-18:00", "Perşembe": "10:00-18:00"}', 2, 'doctor2'),
+    ('Mehmet', 'Demir', 'İstanbul', 'Ortopedi Uzmanı', 'Uzm. Dr.', '{"Cuma": "08:00-16:00", "Cumartesi": "08:00-12:00"}', 3, 'doctor3'),
+    ('Fatma', 'Arslan', 'İstanbul', 'Psikiyatrist', 'Uzm. Dr.', '{"Pazartesi": "13:00-19:00", "Salı": "13:00-19:00"}', 4, 'doctor4');
 
 -- Patient tablosuna veri ekleme
 INSERT INTO Patient (socialNumber, firstName, lastName, gender, address, birthDate, email, phone)
 VALUES 
-    ('12345678901', 'Michael', 'Williams', 'Male', 'Address11', '1990-05-15', 'michael@example.com', '1234567890'),
-    ('23456789012', 'Emma', 'Brown', 'Female', 'Address12', '1985-10-20', 'emma@example.com', '2345678901'),
-    ('34567890123', 'Charlie', 'Johnson', 'Male', 'Address13', '1978-03-25', 'charlie@example.com', '3456789012'),
-    ('45678901234', 'Lily', 'Miller', 'Female', 'Address14', '2000-12-10', 'lily@example.com', '4567890123'),
-    ('56789012345', 'James', 'Anderson', 'Male', 'Address15', '1982-09-03', 'james@example.com', '5678901234');
-
+    ('12345678901', 'Ahmet', 'Yılmaz', 'Erkek', 'İstanbul', '1990-05-15', 'ahmet@example.com', '1234567890'),
+    ('23456789012', 'Ayşe', 'Kaya', 'Kadın', 'Ankara', '1985-10-20', 'ayse@example.com', '2345678901'),
+    ('34567890123', 'Mehmet', 'Demir', 'Erkek', 'İzmir', '1978-03-25', 'mehmet@example.com', '3456789012'),
+    ('45678901234', 'Fatma', 'Arslan', 'Kadın', 'Bursa', '2000-12-10', 'fatma@example.com', '4567890123'),
+    ('56789012345', 'Zeynep', 'Çelik', 'Kadın', 'Antalya', '1982-09-03', 'zeynep@example.com', '5678901234'),
+    ('67890123456', 'Ali', 'Yıldırım', 'Erkek', 'Trabzon', '1995-08-17', 'ali@example.com', '6789012345'),
+    ('78901234567', 'Selin', 'Koç', 'Kadın', 'İzmir', '1975-06-28', 'selin@example.com', '7890123456'),
+    ('89012345678', 'Mustafa', 'Ak', 'Erkek', 'Ankara', '1992-04-12', 'mustafa@example.com', '8901234567'),
+    ('90123456789', 'Aslı', 'Yılmaz', 'Kadın', 'Bursa', '1988-11-05', 'asli@example.com', '9012345678'),
+    ('01234567890', 'Emre', 'Kaya', 'Erkek', 'Antalya', '2005-02-22', 'emre@example.com', '0123456789');
+	
 -- Payment tablosuna veri ekleme
-INSERT INTO Payment (amount, paymentDate, paymentMethod, patientSocialNumber)
-VALUES 
-    (100.00, CURRENT_TIMESTAMP, 'Credit Card', '12345678901'),
-    (150.00, CURRENT_TIMESTAMP, 'Cash', '23456789012');
+--INSERT INTO Payment (amount, paymentDate, paymentMethod, patientSocialNumber)
+--VALUES 
+--    (100.00, CURRENT_TIMESTAMP, 'Kredi Kartı', '12345678901'),
+--    (150.00, CURRENT_TIMESTAMP, 'Nakit', '23456789012');
 
 -- Appointment tablosuna veri ekleme
 INSERT INTO Appointment (appointmentDate, doctorID, clinicID, patientSocialNumber)
 VALUES 
-    (CURRENT_TIMESTAMP, 1, 1, '12345678901'),
-    (CURRENT_TIMESTAMP, 2, 2, '23456789012');
+	('2024-05-06 10:00:00', 1, 1, '12345678901');
 
 -- Treatment tablosuna veri ekleme
-INSERT INTO Treatment (diagnosis, prescription, report, referralNote, treatmentDate, clinicID, doctorID, paymentID, appointmentID, patientSocialNumber, treatmentDuration)
-VALUES 
-    ('Flu', 'Medication A', 'Good recovery', 'Referral to specialist', CURRENT_TIMESTAMP, 1, 1, 1, 1, '12345678901', '00:30:00'),
-    ('Allergy', 'Medication B', 'Stable condition', 'No referral needed', CURRENT_TIMESTAMP, 2, 2, 2, 2, '23456789012', '01:00:00');
+--INSERT INTO Treatment (diagnosis, prescription, report, referralNote, treatmentDate, clinicID, doctorID, paymentID, appointmentID, patientSocialNumber, treatmentDuration)
+--VALUES 
 
 -- MedicalProcedure tablosuna veri ekleme
 INSERT INTO MedicalProcedure (name, cost, policlinicID)
 VALUES 
-    ('Procedure1', 200, 1),
-    ('Procedure2', 300, 2);
+    ('Göz Muayenesi', 150, 1),
+    ('Ürolojik Ultrason', 250, 1),
+    ('Ortopedik Muayene', 200, 1),
+    ('Psikiyatrik Değerlendirme', 300, 1),
+    ('Katarakt Ameliyatı', 1000, 1),
+    ('Böbrek Taşı Kırma', 500, 1),
+    ('Kemik Kırığı Tedavisi', 800, 1),
+    ('Depresyon Tedavisi', 400, 1),
+    ('Göz Lazer Ameliyatı', 2000, 1),
+    ('Prostat Kontrolü', 350, 1),
+    ('Kulak Burun Boğaz Muayenesi', 180, 1),
+    ('Kolit Tedavisi', 600, 1),
+    ('Omurga MR', 700, 1),
+    ('Bipolar Bozukluk Tedavisi', 450, 1),
+    ('Diyabet Kontrolü', 250, 1),
+    ('Mesane İdrar Testi', 120, 1),
+    ('Kırık Platin Tedavisi', 850, 1),
+    ('Anksiyete Terapisi', 380, 1),
+    ('Göz Katarakt Kontrolü', 180, 1),
+    ('Üretral Darlık Testi', 300, 1);
 
 -- MedicalProcedureTreatment tablosuna veri ekleme
-INSERT INTO MedicalProcedureTreatment (medicalProcedureID, treatmentID)
-VALUES 
-    (1, 1),
-    (2, 2);
+--INSERT INTO MedicalProcedureTreatment (medicalProcedureID, treatmentID)
+--VALUES 
+--    (1, 1),
+--    (2, 2);
