@@ -125,7 +125,9 @@ public class LoginPage {
 			        			window.getFrame().setVisible(true);
 			        			frame.dispose();
 			        		} else if (staff_type.equals("registar")) {
-			        			
+			        			RegistrarPage window = new RegistrarPage(hospitalManagementService);
+			        			window.getFrame().setVisible(true);
+			        			frame.dispose();
 			        		} else {
 			        			
 			        		}

@@ -62,10 +62,15 @@ public class TreasurerPage {
         if (social_no.isEmpty()) {
             showErrorMessage("Hasta Kimlik Numarası Boş olamaz");
             current_treatment = null;
-            return; // Hasta kimlik numarası boşsa işlemi sonlandır
+            return;
         }
-
-        // Hasta numarasına göre tedavileri bul
+        
+        if (social_no.length() != 11) {
+            showErrorMessage("Hasta Kimlik Numarası 11 haneli olmalıdır");
+            current_treatment = null;
+            return;
+        }
+        
         List<Treatment> treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNumber(social_no);
         if (treatments.isEmpty()) {
             showErrorMessage("Hasta numarasına göre tedavi bulunamadı.");
@@ -75,7 +80,6 @@ public class TreasurerPage {
 
         boolean hasInsurance = false;
 
-        // Sigortalı hastalar listesinde hastanın olup olmadığını kontrol et
 		for (String person : insuranceServer.getPeopleWithInsurance()) {
 		    if (person.equals(social_no)) {
 		        hasInsurance = true;
@@ -83,12 +87,10 @@ public class TreasurerPage {
 		    }
 		}
 		
-        // Hastanın sigortası olup olmadığına göre text alanını güncelle
         patient_insurance_textField.setText(hasInsurance ? "Evet" : "Hayır");
 
         double totalCost = 0;
 
-        // Tedavilerin toplam maliyetini hesapla
         for (Treatment treatment : treatments) {
             if (treatment.getPayment() == null) {
             	current_treatment = treatment;
@@ -114,10 +116,9 @@ public class TreasurerPage {
         String social_no = patient_social_no_textField.getText();
         if (social_no.isEmpty()) {
             showErrorMessage("Hasta Kimlik Numarası Boş olamaz");
-            return; // Hasta kimlik numarası boşsa işlemi sonlandır
+            return;
         }
 
-        // Hastanın bilgilerini veritabanından çek
         Patient patient = hospitalManagementService.getPatientRepository().findBySocialNumber(social_no);
         if (patient == null) {
             showErrorMessage("Veritabanında bu kimlik numarasına sahip hasta bulunamadı.");
@@ -126,11 +127,10 @@ public class TreasurerPage {
 
         String paymentMethod = (String) type_of_pay_combo.getSelectedItem();
         double amount = Double.parseDouble(total_price_textField.getText());
-        Timestamp paymentDate = new Timestamp(System.currentTimeMillis()); // Şu anki zaman damgasını al
+        Timestamp paymentDate = new Timestamp(System.currentTimeMillis());
 
-        // Payment tablosuna yeni bir öğe ekle
         Payment newPayment = new Payment();
-        newPayment.setPatient(patient); // Patient nesnesinden sosyal numarayı al
+        newPayment.setPatient(patient);
         newPayment.setPaymentMethod(paymentMethod);
         newPayment.setAmount(amount);
         newPayment.setPaymentDate(paymentDate);
@@ -178,15 +178,13 @@ public class TreasurerPage {
 
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel, BorderLayout.CENTER);
-        panel.setLayout(null); // Yerleştirme için mutlak konum kullanacağız
+        panel.setLayout(null);
 
-        // Başlık
         title = new JLabel("MUAYENE ÜCRETİ ÖDEME");
         title.setFont(new Font("Tahoma", Font.BOLD, 16));
         title.setBounds(161, 20, 229, 20);
         panel.add(title);
 
-        // Sosyal güvenlik numarası alanı
         patient_social_no_label = new JLabel("Hasta Kimlik No:");
         patient_social_no_label.setBounds(37, 96, 150, 20);
         panel.add(patient_social_no_label);
@@ -195,7 +193,6 @@ public class TreasurerPage {
         patient_social_no_textField.setBounds(178, 97, 150, 20);
         panel.add(patient_social_no_textField);
 
-        // Sigorta numarası alanı
         patient_insurance_label = new JLabel("Sigorta Durumu:");
         patient_insurance_label.setBounds(37, 203, 150, 20);
         panel.add(patient_insurance_label);
@@ -204,7 +201,6 @@ public class TreasurerPage {
         patient_insurance_textField.setBounds(178, 204, 150, 20);
         panel.add(patient_insurance_textField);
 
-        // Toplam fiyat alanı
         total_price_label = new JLabel("Toplam Ücret:");
         total_price_label.setBounds(37, 252, 150, 20);
         panel.add(total_price_label);
@@ -213,7 +209,6 @@ public class TreasurerPage {
         total_price_textField.setBounds(178, 253, 150, 20);
         panel.add(total_price_textField);
 
-        // Ödeme Türü alanı
         type_of_pay_label = new JLabel("Ödeme Türü:");
         type_of_pay_label.setBounds(37, 298, 150, 20);
         panel.add(type_of_pay_label);
@@ -223,7 +218,6 @@ public class TreasurerPage {
         type_of_pay_combo.setBounds(178, 298, 150, 20);
         panel.add(type_of_pay_combo);
 
-        // Hesapla butonu
         calculate_price_button = new JButton("Ücreti Hesapla");
         calculate_price_button.setBounds(363, 96, 133, 20);
         panel.add(calculate_price_button);
@@ -233,7 +227,6 @@ public class TreasurerPage {
 			}
 		});
 
-        // Onayla butonu
         confirm_payment_button = new JButton("Ödemeyi Onayla");
         confirm_payment_button.setBounds(178, 376, 150, 30);
         panel.add(confirm_payment_button);
