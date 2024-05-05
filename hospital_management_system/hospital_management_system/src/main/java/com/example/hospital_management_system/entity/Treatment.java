@@ -65,8 +65,8 @@ public class Treatment {
         this.appointment = appointment;
         this.patient = patient;
         this.referralNote = null;
-        this.diagnosis = null;
         this.prescription = null;
+        this.report = null;
         this.treatmentDuration = Time.valueOf(LocalTime.of(0, 30));
     }
 
