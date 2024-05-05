@@ -20,10 +20,10 @@ public class Treatment {
     @Column(name = "prescription", length = 255)
     private String prescription;
 
-    @Column(name = "report", length = 255, nullable = false)
+    @Column(name = "report", length = 255)
     private String report;
 
-    @Column(name = "referralnote", length = 255, nullable = false)
+    @Column(name = "referralnote", length = 255)
     private String referralNote;
 
     @Column(name = "treatmentdate", nullable = false)
