@@ -132,14 +132,14 @@ public class DoctorPage {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        // Set to yesterday
-        calendar.add(Calendar.DATE, -1);
-        Date startDate = calendar.getTime();  // Start of yesterday
+        // Set to yesterday for testing purposes
+        // calendar.add(Calendar.DATE, -1);
+        Date startDate = calendar.getTime();  // Start of today
 
-        // Set to the end of yesterday
+        // Set to the end of yesterday for testing purposes
         calendar.add(Calendar.DATE, 1);
         calendar.add(Calendar.MILLISECOND, -1);
-        Date endDate = calendar.getTime();    // End of yesterday
+        Date endDate = calendar.getTime();    // End of today
 
         return hospitalManagementService.getAppointmentRepository().findByDoctorAndAppointmentDateBetween(doctor, startDate, endDate);
     }
