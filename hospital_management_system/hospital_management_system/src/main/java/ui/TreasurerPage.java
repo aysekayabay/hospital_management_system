@@ -4,8 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,10 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.example.hospital_management_system.HospitalManagementService;
-import com.example.hospital_management_system.entity.Doctor;
 import com.example.hospital_management_system.entity.InsuranceServer;
 import com.example.hospital_management_system.entity.MedicalProcedure;
 import com.example.hospital_management_system.entity.MedicalProcedureTreatment;
+import com.example.hospital_management_system.entity.Patient;
+import com.example.hospital_management_system.entity.Payment;
 import com.example.hospital_management_system.entity.Treatment;
 
 import java.awt.BorderLayout;
@@ -47,6 +48,7 @@ public class TreasurerPage {
 
 	private HospitalManagementService hospitalManagementService;
 	private InsuranceServer insuranceServer;
+	private Treatment current_treatment;
     /**
      * Launch the application.
      */
@@ -59,6 +61,7 @@ public class TreasurerPage {
         String social_no = patient_social_no_textField.getText();
         if (social_no.isEmpty()) {
             showErrorMessage("Hasta Kimlik Numarası Boş olamaz");
+            current_treatment = null;
             return; // Hasta kimlik numarası boşsa işlemi sonlandır
         }
 
@@ -66,6 +69,7 @@ public class TreasurerPage {
         List<Treatment> treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNo(social_no);
         if (treatments.isEmpty()) {
             showErrorMessage("Hasta numarasına göre tedavi bulunamadı.");
+            current_treatment = null;
             return;
         }
 
@@ -86,10 +90,9 @@ public class TreasurerPage {
 
         // Tedavilerin toplam maliyetini hesapla
         for (Treatment treatment : treatments) {
-            // Tedaviye ait ödeme var mı kontrol et
             if (treatment.getPayment() == null) {
-                // Ödeme yapılmamışsa, bu tedavinin maliyetini toplama ekle
-                Long treatment_id = treatment.getId();
+            	current_treatment = treatment;
+                Long treatment_id = current_treatment.getId();
                 MedicalProcedureTreatment procedureTreatment = hospitalManagementService.getMedicalProcedureTreatmentRepository().findByTreatmentId(treatment_id);
                 if (procedureTreatment != null) {
                     MedicalProcedure procedure = procedureTreatment.getMedicalProcedure();
@@ -97,6 +100,7 @@ public class TreasurerPage {
                         totalCost += procedure.getCost();
                     }
                 }
+                break;
             }
         }
 
@@ -107,8 +111,40 @@ public class TreasurerPage {
 
 
     protected void confirm_payment_function() {
+        String social_no = patient_social_no_textField.getText();
+        if (social_no.isEmpty()) {
+            showErrorMessage("Hasta Kimlik Numarası Boş olamaz");
+            return; // Hasta kimlik numarası boşsa işlemi sonlandır
+        }
+
+        // Hastanın bilgilerini veritabanından çek
+        Patient patient = hospitalManagementService.getPatientRepository().findBySocialNumber(social_no);
+        if (patient == null) {
+            showErrorMessage("Veritabanında bu kimlik numarasına sahip hasta bulunamadı.");
+            return;
+        }
+
+        String paymentMethod = (String) type_of_pay_combo.getSelectedItem();
+        double amount = Double.parseDouble(total_price_textField.getText());
+        Timestamp paymentDate = new Timestamp(System.currentTimeMillis()); // Şu anki zaman damgasını al
+
+        // Payment tablosuna yeni bir öğe ekle
+        Payment newPayment = new Payment();
+        newPayment.setPatient(patient); // Patient nesnesinden sosyal numarayı al
+        newPayment.setPaymentMethod(paymentMethod);
+        newPayment.setAmount(amount);
+        newPayment.setPaymentDate(paymentDate);
+
+        hospitalManagementService.getPaymentRepository().save(newPayment);
+        
+		current_treatment.setPayment(newPayment);
 		
-	}
+		hospitalManagementService.getTreatmentRepository().save(current_treatment);
+
+        JOptionPane.showMessageDialog(null, "Ödeme Onaylandı", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
     
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -155,7 +191,7 @@ public class TreasurerPage {
         panel.add(patient_social_no_label);
 
         patient_social_no_textField = new JTextField();
-        patient_social_no_textField.setBounds(210, 97, 200, 20);
+        patient_social_no_textField.setBounds(210, 97, 150, 20);
         panel.add(patient_social_no_textField);
 
         // Sigorta numarası alanı
@@ -164,7 +200,7 @@ public class TreasurerPage {
         panel.add(patient_insurance_label);
 
         patient_insurance_textField = new JTextField();
-        patient_insurance_textField.setBounds(210, 204, 200, 20);
+        patient_insurance_textField.setBounds(210, 204, 150, 20);
         panel.add(patient_insurance_textField);
 
         // Toplam fiyat alanı
@@ -173,7 +209,7 @@ public class TreasurerPage {
         panel.add(total_price_label);
 
         total_price_textField = new JTextField();
-        total_price_textField.setBounds(210, 253, 200, 20);
+        total_price_textField.setBounds(210, 253, 150, 20);
         panel.add(total_price_textField);
 
         // Ödeme Türü alanı
@@ -183,12 +219,12 @@ public class TreasurerPage {
 
         String[] paymentTypes = {"Nakit", "Kredi Kartı"};
         type_of_pay_combo = new JComboBox<>(paymentTypes);
-        type_of_pay_combo.setBounds(210, 298, 200, 20);
+        type_of_pay_combo.setBounds(210, 298, 150, 20);
         panel.add(type_of_pay_combo);
 
         // Hesapla butonu
         calculate_price_button = new JButton("Ücreti Hesapla");
-        calculate_price_button.setBounds(428, 96, 80, 20);
+        calculate_price_button.setBounds(409, 96, 99, 20);
         panel.add(calculate_price_button);
         calculate_price_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
