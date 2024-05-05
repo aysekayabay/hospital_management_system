@@ -21,7 +21,7 @@ VALUES
 -- Staff tablosuna veri ekleme
 INSERT INTO Staff (firstName, lastName, address, staffType, policlinicID, password)
 VALUES 
-    ('Selim', 'Yılmaz', 'İstanbul', 'treasurer', 1, 'staff1'),
+    ('Selim', 'Akın', 'İstanbul', 'treasurer', 1, 'staff1'),
     ('Hüseyin', 'Kaya', 'İstanbul', 'treasurer', 1, 'staff2'),
     ('Yavuz', 'Kartal', 'İstanbul', 'registar', 1, 'staff3'),
     ('Zeynep', 'Çelik', 'İstanbul', 'registar', 1, 'staff4'),
@@ -32,7 +32,7 @@ VALUES
 INSERT INTO Doctor (firstName, lastName, address, specialty, qualification, workingHours, clinicID, password)
 VALUES 
    ('Ahmet', 'Yılmaz', 'İstanbul', 'Göz Doktoru', 'Uzm. Dr.', '{"Pazartesi": "09:00-17:00", "Salı": "09:00-17:00"}', 1, 'doctor1'),
-    ('İbrahim', 'Kaya', 'İstanbul', 'Ürolog', 'Uzm. Dr.', '{"Çarşamba": "10:00-18:00", "Perşembe": "10:00-18:00"}', 2, 'doctor2'),
+    ('İbrahim', 'Koral', 'İstanbul', 'Ürolog', 'Uzm. Dr.', '{"Çarşamba": "10:00-18:00", "Perşembe": "10:00-18:00"}', 2, 'doctor2'),
     ('Mehmet', 'Demir', 'İstanbul', 'Ortopedi Uzmanı', 'Uzm. Dr.', '{"Cuma": "08:00-16:00", "Cumartesi": "08:00-12:00"}', 3, 'doctor3'),
     ('Fatma', 'Arslan', 'İstanbul', 'Psikiyatrist', 'Uzm. Dr.', '{"Pazartesi": "13:00-19:00", "Salı": "13:00-19:00"}', 4, 'doctor4');
 
