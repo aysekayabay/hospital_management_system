@@ -10,10 +10,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import com.example.hospital_management_system.Constants;
 import com.example.hospital_management_system.HospitalManagementService;
 import com.example.hospital_management_system.entity.Appointment;
 import com.example.hospital_management_system.entity.Doctor;
 import com.example.hospital_management_system.entity.MedicalProcedure;
+import com.example.hospital_management_system.entity.MedicalProcedureTreatment;
 import com.example.hospital_management_system.entity.Patient;
 import com.example.hospital_management_system.entity.Treatment;
 
@@ -23,11 +25,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalTime;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -55,8 +55,9 @@ public class ViewPatientAndAddRecordPage {
 	private final Doctor doctor;
 	private final Appointment appointment;
 	private final HospitalManagementService hospitalManagementService;
-	private JComboBox add_treatment_procedures_combobox = new JComboBox();
+	private JComboBox<String> add_treatment_procedures_combobox = new JComboBox<String>();
 	private DefaultTableModel add_treatment_added_procedures_model;
+	private DefaultTableModel view_patient_treatment_history_model;
 	private JTable add_treatment_added_procedures_table;
 	private JButton add_treatment_add_procedure_button;
 
@@ -75,12 +76,15 @@ public class ViewPatientAndAddRecordPage {
 		view_patient_birthdate_output_label.setText(patient.getBirthDate().toString());
 		view_patient_address_output_label.setText(patient.getAddress());
 		view_patient_email_output_label.setText(patient.getEmail());
+		
+	    loadPatientTreatmentHistory(patient.getSocialNumber());
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public ViewPatientAndAddRecordPage(Patient patient, Doctor doctor, Appointment appointment, HospitalManagementService hospitalManagementService) {
+	public ViewPatientAndAddRecordPage(Patient patient, Doctor doctor, Appointment appointment,
+			HospitalManagementService hospitalManagementService) {
 		this.hospitalManagementService = hospitalManagementService;
 		this.doctor = doctor;
 		this.appointment = appointment;
@@ -95,11 +99,27 @@ public class ViewPatientAndAddRecordPage {
 	}
 
 	private void loadProceduresComboBox() {
-		List<MedicalProcedure> procedures = hospitalManagementService.getMedicalProcedureRepository().findAll();
+		List<MedicalProcedure> procedures = hospitalManagementService.getMedicalProcedureRepository()
+				.findByPoliclinicId(Constants.hospitalId);
 		for (MedicalProcedure procedure : procedures) {
 			add_treatment_procedures_combobox.addItem(procedure.getName());
 		}
 	}
+	
+	private void loadPatientTreatmentHistory(String socialNumber) {
+	    List<Treatment> treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNumberOrderByTreatmentDateDesc(socialNumber);
+	    view_patient_treatment_history_model.setRowCount(0);
+
+	    for (Treatment treatment : treatments) {
+	        view_patient_treatment_history_model.addRow(new Object[] {
+	            treatment.getTreatmentDate(),
+	            treatment.getClinic().getName(),
+	            treatment.getDoctorID().getFirstName() + treatment.getDoctorID().getLastName(), 
+	            treatment.getDiagnosis()
+	        });
+	    }
+	}
+
 
 	private void addProcedureToTable() {
 		String selectedProcedure = (String) add_treatment_procedures_combobox.getSelectedItem();
@@ -121,104 +141,6 @@ public class ViewPatientAndAddRecordPage {
 		frame.setBounds(100, 100, 514, 633);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-		JPanel add_treatment_panel = new JPanel();
-		add_treatment_panel.setBackground(Color.WHITE);
-		add_treatment_panel.setBounds(0, 0, 500, 596);
-		frame.getContentPane().add(add_treatment_panel);
-		add_treatment_panel.setLayout(null);
-		add_treatment_panel.setVisible(false);
-
-		JLabel add_treatment_title_label = new JLabel("TEDAVİ KAYDI EKLE");
-		add_treatment_title_label.setHorizontalAlignment(SwingConstants.CENTER);
-		add_treatment_title_label.setBounds(10, 10, 480, 13);
-		add_treatment_panel.add(add_treatment_title_label);
-
-		JLabel add_treatment_diagnosis_label = new JLabel("Tanı:");
-		add_treatment_diagnosis_label.setBounds(37, 44, 64, 13);
-		add_treatment_panel.add(add_treatment_diagnosis_label);
-
-		add_treatment_diagnosis_textfield = new JTextField();
-		add_treatment_diagnosis_textfield.setBounds(112, 41, 345, 19);
-		add_treatment_panel.add(add_treatment_diagnosis_textfield);
-		add_treatment_diagnosis_textfield.setColumns(10);
-
-		JLabel add_treatment_procedures_label = new JLabel("İşlemler:");
-		add_treatment_procedures_label.setBounds(37, 70, 64, 13);
-		add_treatment_panel.add(add_treatment_procedures_label);
-
-		add_treatment_procedures_combobox.setBackground(Color.WHITE);
-		add_treatment_procedures_combobox.setBounds(112, 66, 212, 21);
-		add_treatment_panel.add(add_treatment_procedures_combobox);
-
-		add_treatment_add_procedure_button = new JButton("Ekle");
-		add_treatment_add_procedure_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addProcedureToTable();
-			}
-		});
-		add_treatment_add_procedure_button.setBounds(334, 66, 123, 21);
-		add_treatment_panel.add(add_treatment_add_procedure_button);
-
-		add_treatment_added_procedures_model = new DefaultTableModel(new Object[][] {}, new String[] { "Eklenen İşlemler" }) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		// Combobox başlangıç öğesi ekleniyor
-		add_treatment_procedures_combobox.addItem("Seçiniz");
-		add_treatment_procedures_combobox.setSelectedIndex(0);
-
-		// Ekle butonunun durumu kontrol ediliyor
-		add_treatment_add_procedure_button.setEnabled(false);
-
-		// Combobox seçim durumu dinleniyor
-		add_treatment_procedures_combobox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					String selectedProcedure = (String) add_treatment_procedures_combobox.getSelectedItem();
-					// Seçili prosedür "Seçiniz" değilse ekle butonunu aktif hale getir
-					add_treatment_add_procedure_button.setEnabled(!selectedProcedure.equals("Seçiniz"));
-				}
-			}
-		});
-
-		JCheckBox add_treatment_prescription_checkbox = new JCheckBox("Reçete");
-		add_treatment_prescription_checkbox.setBackground(Color.WHITE);
-		add_treatment_prescription_checkbox.setBounds(30, 225, 78, 21);
-		add_treatment_panel.add(add_treatment_prescription_checkbox);
-
-		JCheckBox add_treatment_report_checkbox = new JCheckBox("Rapor");
-		add_treatment_report_checkbox.setBackground(Color.WHITE);
-		add_treatment_report_checkbox.setBounds(28, 336, 78, 21);
-		add_treatment_panel.add(add_treatment_report_checkbox);
-
-		add_treatment_prescription_checkbox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				add_treatment_prescription_textfield.setEnabled(add_treatment_prescription_checkbox.isSelected());
-			}
-		});
-
-		add_treatment_report_checkbox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				add_treatment_report_textfield.setEnabled(add_treatment_report_checkbox.isSelected());
-			}
-		});
-		add_treatment_prescription_textfield = new JTextField();
-		add_treatment_prescription_textfield.setColumns(5);
-		add_treatment_prescription_textfield.setBounds(112, 226, 345, 100);
-		add_treatment_panel.add(add_treatment_prescription_textfield);
-
-		add_treatment_report_textfield = new JTextField();
-		add_treatment_report_textfield.setColumns(10);
-		add_treatment_report_textfield.setBounds(112, 337, 345, 100);
-		add_treatment_panel.add(add_treatment_report_textfield);
-
-		
-
-		add_treatment_prescription_textfield.setEnabled(add_treatment_prescription_checkbox.isSelected());
-		add_treatment_report_textfield.setEnabled(add_treatment_report_checkbox.isSelected());
 		JPanel view_patient_panel = new JPanel();
 		view_patient_panel.setBackground(Color.WHITE);
 		view_patient_panel.setBounds(0, 0, 500, 596);
@@ -291,10 +213,6 @@ public class ViewPatientAndAddRecordPage {
 		view_patient_subtitle_label.setBounds(10, 196, 480, 13);
 		view_patient_panel.add(view_patient_subtitle_label);
 
-		view_patient_treatments_table = new JTable();
-		view_patient_treatments_table.setBounds(20, 230, 460, 265);
-		view_patient_panel.add(view_patient_treatments_table);
-
 		JButton view_patient_view_details_button = new JButton("Tedavi Detaylarını Görüntüle");
 		view_patient_view_details_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -302,16 +220,122 @@ public class ViewPatientAndAddRecordPage {
 		});
 		view_patient_view_details_button.setBounds(262, 522, 218, 30);
 		view_patient_panel.add(view_patient_view_details_button);
+		
+		view_patient_treatment_history_model = new DefaultTableModel(new Object[][] {},
+				new String[] { "Tarih", "Klinik", "Doktor", "Tanı" }) {
+			private static final long serialVersionUID = 1L;
 
-		JButton view_patient_add_treatment_button = new JButton("Tedavi Kaydı Ekle");
-		view_patient_add_treatment_button.addActionListener(new ActionListener() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		JScrollPane view_patient_treatment_history_scrollpane = new JScrollPane();
+		view_patient_treatment_history_scrollpane.setBounds(20, 230, 460, 265);
+		view_patient_panel.add(view_patient_treatment_history_scrollpane);
+
+		view_patient_treatments_table = new JTable(view_patient_treatment_history_model);
+		view_patient_treatment_history_scrollpane.setViewportView(view_patient_treatments_table);
+
+		JPanel add_treatment_panel = new JPanel();
+		add_treatment_panel.setBackground(Color.WHITE);
+		add_treatment_panel.setBounds(0, 0, 500, 596);
+		frame.getContentPane().add(add_treatment_panel);
+		add_treatment_panel.setLayout(null);
+		add_treatment_panel.setVisible(false);
+
+		JLabel add_treatment_title_label = new JLabel("TEDAVİ KAYDI EKLE");
+		add_treatment_title_label.setHorizontalAlignment(SwingConstants.CENTER);
+		add_treatment_title_label.setBounds(10, 10, 480, 13);
+		add_treatment_panel.add(add_treatment_title_label);
+
+		JLabel add_treatment_diagnosis_label = new JLabel("Tanı:");
+		add_treatment_diagnosis_label.setBounds(37, 44, 64, 13);
+		add_treatment_panel.add(add_treatment_diagnosis_label);
+
+		add_treatment_diagnosis_textfield = new JTextField();
+		add_treatment_diagnosis_textfield.setBounds(112, 41, 345, 19);
+		add_treatment_panel.add(add_treatment_diagnosis_textfield);
+		add_treatment_diagnosis_textfield.setColumns(10);
+
+		JLabel add_treatment_procedures_label = new JLabel("İşlemler:");
+		add_treatment_procedures_label.setBounds(37, 70, 64, 13);
+		add_treatment_panel.add(add_treatment_procedures_label);
+
+		add_treatment_procedures_combobox.setBackground(Color.WHITE);
+		add_treatment_procedures_combobox.setBounds(112, 66, 212, 21);
+		add_treatment_panel.add(add_treatment_procedures_combobox);
+
+		add_treatment_add_procedure_button = new JButton("Ekle");
+		add_treatment_add_procedure_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				view_patient_panel.setVisible(false);
-				add_treatment_panel.setVisible(true);
+				addProcedureToTable();
 			}
 		});
-		view_patient_add_treatment_button.setBounds(20, 522, 218, 30);
-		view_patient_panel.add(view_patient_add_treatment_button);
+		add_treatment_add_procedure_button.setBounds(334, 66, 123, 21);
+		add_treatment_panel.add(add_treatment_add_procedure_button);
+
+		add_treatment_added_procedures_model = new DefaultTableModel(new Object[][] {},
+				new String[] { "Eklenen İşlemler" }) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		// Combobox başlangıç öğesi ekleniyor
+		add_treatment_procedures_combobox.addItem("Seçiniz");
+		add_treatment_procedures_combobox.setSelectedIndex(0);
+
+		// Ekle butonunun durumu kontrol ediliyor
+		add_treatment_add_procedure_button.setEnabled(false);
+
+		// Combobox seçim durumu dinleniyor
+		add_treatment_procedures_combobox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					String selectedProcedure = (String) add_treatment_procedures_combobox.getSelectedItem();
+					// Seçili prosedür "Seçiniz" değilse ekle butonunu aktif hale getir
+					add_treatment_add_procedure_button.setEnabled(!selectedProcedure.equals("Seçiniz"));
+				}
+			}
+		});
+
+		JCheckBox add_treatment_prescription_checkbox = new JCheckBox("Reçete");
+		add_treatment_prescription_checkbox.setBackground(Color.WHITE);
+		add_treatment_prescription_checkbox.setBounds(30, 225, 78, 21);
+		add_treatment_panel.add(add_treatment_prescription_checkbox);
+
+		JCheckBox add_treatment_report_checkbox = new JCheckBox("Rapor");
+		add_treatment_report_checkbox.setBackground(Color.WHITE);
+		add_treatment_report_checkbox.setBounds(28, 336, 78, 21);
+		add_treatment_panel.add(add_treatment_report_checkbox);
+
+		add_treatment_prescription_checkbox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				add_treatment_prescription_textfield.setEnabled(add_treatment_prescription_checkbox.isSelected());
+			}
+		});
+
+		add_treatment_report_checkbox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				add_treatment_report_textfield.setEnabled(add_treatment_report_checkbox.isSelected());
+			}
+		});
+		add_treatment_prescription_textfield = new JTextField();
+		add_treatment_prescription_textfield.setColumns(5);
+		add_treatment_prescription_textfield.setBounds(112, 226, 345, 100);
+		add_treatment_panel.add(add_treatment_prescription_textfield);
+
+		add_treatment_report_textfield = new JTextField();
+		add_treatment_report_textfield.setColumns(10);
+		add_treatment_report_textfield.setBounds(112, 337, 345, 100);
+		add_treatment_panel.add(add_treatment_report_textfield);
+
+		add_treatment_prescription_textfield.setEnabled(add_treatment_prescription_checkbox.isSelected());
+		add_treatment_report_textfield.setEnabled(add_treatment_report_checkbox.isSelected());
 
 		JButton add_treatment_cancel_button = new JButton("Vazgeç");
 		add_treatment_cancel_button.addActionListener(new ActionListener() {
@@ -335,11 +359,11 @@ public class ViewPatientAndAddRecordPage {
 		add_treatment_panel.add(add_treatment_remove_procedure_button);
 
 		add_treatment_added_procedures_table = new JTable(add_treatment_added_procedures_model);
-		
-		JScrollPane scrollPane = new JScrollPane(add_treatment_added_procedures_table);
-		scrollPane.setBounds(112, 97, 212, 119);
-		add_treatment_panel.add(scrollPane);
-		
+
+		JScrollPane add_treatment_added_procedures_scrollpane = new JScrollPane(add_treatment_added_procedures_table);
+		add_treatment_added_procedures_scrollpane.setBounds(112, 97, 212, 119);
+		add_treatment_panel.add(add_treatment_added_procedures_scrollpane);
+
 		ListSelectionModel selectionModel = add_treatment_added_procedures_table.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -356,6 +380,16 @@ public class ViewPatientAndAddRecordPage {
 			}
 		});
 		
+		JButton view_patient_add_treatment_button = new JButton("Tedavi Kaydı Ekle");
+		view_patient_add_treatment_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				view_patient_panel.setVisible(false);
+				add_treatment_panel.setVisible(true);
+			}
+		});
+		view_patient_add_treatment_button.setBounds(20, 522, 218, 30);
+		view_patient_panel.add(view_patient_add_treatment_button);
+		
 		JButton add_treatment_complete_record_button = new JButton("Kaydı Tamamla");
 		add_treatment_complete_record_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -364,8 +398,9 @@ public class ViewPatientAndAddRecordPage {
 				String report = add_treatment_report_textfield.getText();
 
 				// Treatment objesini oluştur
-				Treatment treatment = new Treatment(diagnosis, Timestamp.from(Instant.now()), doctor.getClinic(), doctor, null, appointment, patient);				
-		
+				Treatment treatment = new Treatment(diagnosis, Timestamp.from(Instant.now()), doctor.getClinic(),
+						doctor, null, appointment, patient);
+
 				// Reçete checkbox'ı işaretliyse
 				if (add_treatment_prescription_checkbox.isSelected()) {
 					treatment.setPrescription(prescription);
@@ -375,13 +410,29 @@ public class ViewPatientAndAddRecordPage {
 				if (add_treatment_report_checkbox.isSelected()) {
 					treatment.setReport(report);
 				}
-				
+
 				// Tedaviyi kaydet
 				Treatment savedTreatment = hospitalManagementService.getTreatmentRepository().save(treatment);
 
 				if (savedTreatment != null) {
 					// Başarılı bir şekilde tedavi kaydedildiğinde bir mesaj göster
 					JOptionPane.showMessageDialog(frame, "Tedavi kaydı başarıyla oluşturuldu.");
+
+					// Seçilen prosedürlerin ID'lerini al ve tedaviye ekle
+					for (int i = 0; i < add_treatment_added_procedures_model.getRowCount(); i++) {
+						String procedureName = (String) add_treatment_added_procedures_model.getValueAt(i, 0);
+						MedicalProcedure procedure = hospitalManagementService.getMedicalProcedureRepository()
+								.findByName(procedureName);
+
+						if (procedure != null) {
+							// MedicalProcedureTreatment nesnesi oluştur
+							MedicalProcedureTreatment medicalProcedureTreatment = new MedicalProcedureTreatment(
+									procedure, savedTreatment);
+							hospitalManagementService.getMedicalProcedureTreatmentRepository()
+									.save(medicalProcedureTreatment);
+						}
+					}
+					loadPatientTreatmentHistory(patient.getSocialNumber());
 					add_treatment_panel.setVisible(false);
 					view_patient_panel.setVisible(true);
 					view_patient_add_treatment_button.setVisible(false);
@@ -391,6 +442,7 @@ public class ViewPatientAndAddRecordPage {
 							JOptionPane.ERROR_MESSAGE);
 				}
 				// İlgili alanları temizle
+
 				add_treatment_diagnosis_textfield.setText("");
 				add_treatment_prescription_textfield.setText("");
 				add_treatment_report_textfield.setText("");
