@@ -66,7 +66,7 @@ public class TreasurerPage {
         }
 
         // Hasta numarasına göre tedavileri bul
-        List<Treatment> treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNo(social_no);
+        List<Treatment> treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNumber(social_no);
         if (treatments.isEmpty()) {
             showErrorMessage("Hasta numarasına göre tedavi bulunamadı.");
             current_treatment = null;

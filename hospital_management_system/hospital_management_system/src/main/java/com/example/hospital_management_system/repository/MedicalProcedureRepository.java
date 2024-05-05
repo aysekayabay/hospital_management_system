@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface MedicalProcedureRepository extends JpaRepository<MedicalProcedure, Long> {
     MedicalProcedure findByName(String name);
     List<MedicalProcedure> findByPoliclinicId(int policlinicId);
-    Optional<MedicalProcedure> findByMedicalProcedureId(Long medicalProcedureId);
+    Optional<MedicalProcedure> findById(Long id);
 }

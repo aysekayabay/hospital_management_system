@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MedicalProcedureTreatmentRepository extends JpaRepository<MedicalProcedureTreatment, Long> {
 
-    MedicalProcedureTreatment findByMedicalProcedureIdandTreatmentId(Long medicalProcedureId, Long treatmentId);
+    MedicalProcedureTreatment findByMedicalProcedureIdAndTreatmentId(Long medicalProcedureId, Long treatmentId);
     MedicalProcedureTreatment findByMedicalProcedureId(Long medicalProcedureId);
     MedicalProcedureTreatment findByTreatmentId(Long treatmentId);
     
