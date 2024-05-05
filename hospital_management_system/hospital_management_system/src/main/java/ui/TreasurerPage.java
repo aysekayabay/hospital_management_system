@@ -150,7 +150,7 @@ public class TreasurerPage {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    TreasurerPage window = new TreasurerPage(null, null);
+                    TreasurerPage window = new TreasurerPage(null);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -162,8 +162,9 @@ public class TreasurerPage {
     /**
      * Create the application.
      */
-    public TreasurerPage(HospitalManagementService hospitalManagementService, InsuranceServer insuranceServer) {
+    public TreasurerPage(HospitalManagementService hospitalManagementService) {
 		this.hospitalManagementService = hospitalManagementService;
+		this.insuranceServer = hospitalManagementService.getInsuranceServerRepository().findById((long) 1).orElse(null);
         initialize();
     }
 
@@ -191,7 +192,7 @@ public class TreasurerPage {
         panel.add(patient_social_no_label);
 
         patient_social_no_textField = new JTextField();
-        patient_social_no_textField.setBounds(210, 97, 150, 20);
+        patient_social_no_textField.setBounds(178, 97, 150, 20);
         panel.add(patient_social_no_textField);
 
         // Sigorta numarası alanı
@@ -200,7 +201,7 @@ public class TreasurerPage {
         panel.add(patient_insurance_label);
 
         patient_insurance_textField = new JTextField();
-        patient_insurance_textField.setBounds(210, 204, 150, 20);
+        patient_insurance_textField.setBounds(178, 204, 150, 20);
         panel.add(patient_insurance_textField);
 
         // Toplam fiyat alanı
@@ -209,7 +210,7 @@ public class TreasurerPage {
         panel.add(total_price_label);
 
         total_price_textField = new JTextField();
-        total_price_textField.setBounds(210, 253, 150, 20);
+        total_price_textField.setBounds(178, 253, 150, 20);
         panel.add(total_price_textField);
 
         // Ödeme Türü alanı
@@ -219,12 +220,12 @@ public class TreasurerPage {
 
         String[] paymentTypes = {"Nakit", "Kredi Kartı"};
         type_of_pay_combo = new JComboBox<>(paymentTypes);
-        type_of_pay_combo.setBounds(210, 298, 150, 20);
+        type_of_pay_combo.setBounds(178, 298, 150, 20);
         panel.add(type_of_pay_combo);
 
         // Hesapla butonu
         calculate_price_button = new JButton("Ücreti Hesapla");
-        calculate_price_button.setBounds(409, 96, 99, 20);
+        calculate_price_button.setBounds(363, 96, 133, 20);
         panel.add(calculate_price_button);
         calculate_price_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -243,8 +244,7 @@ public class TreasurerPage {
 		});
     }
 
-
-
-	
-
+    public JFrame getFrame() {
+		return frame;
+	}
 }

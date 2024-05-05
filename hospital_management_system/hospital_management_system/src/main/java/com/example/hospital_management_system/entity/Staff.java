@@ -90,6 +90,10 @@ public class Staff {
         this.policlinic = policlinic;
     }
 
+    public StaffType getStaffType() {
+        return staffType;
+    }
+
     @Override
     public String toString() {
         return "Staff{" +

@@ -117,8 +117,18 @@ public class LoginPage {
 		        	}else if(user.equals("St")) {
 		        		Long id = Long.parseLong(username.substring(2,username.length()));
 		        		Staff staff = hospitalManagementService.getStaffRepository().findById(id).orElse(null);
-		        		if(staff.getPassword() == password) {
+		        		if(staff.getPassword().equals(password)) {
 		        			JOptionPane.showMessageDialog(null, "Staff girişi başarılı!", "Başarılı", JOptionPane.ERROR_MESSAGE);
+		        			String staff_type = staff.getStaffType().toString();
+			        		if (staff_type.equals("treasurer")) {
+			        			TreasurerPage window = new TreasurerPage(hospitalManagementService);
+			        			window.getFrame().setVisible(true);
+			        			frame.dispose();
+			        		} else if (staff_type.equals("registar")) {
+			        			
+			        		} else {
+			        			
+			        		}
 		        		}else {
 		        			JOptionPane.showMessageDialog(null, "Id veya şifre hatalı!", "Hata", JOptionPane.ERROR_MESSAGE);
 		        		}
