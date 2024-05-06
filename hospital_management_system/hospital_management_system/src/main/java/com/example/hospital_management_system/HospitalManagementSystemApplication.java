@@ -8,7 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import com.example.hospital_management_system.entity.Doctor;
 import com.example.hospital_management_system.repository.*;
 
-import ui.DoctorPage;
+import ui.*;
 import ui.LoginPage;
 
 @SpringBootApplication
@@ -68,7 +68,7 @@ public class HospitalManagementSystemApplication implements CommandLineRunner {
 //           window.getFrame().setVisible(true);
 //        } 
 
-    	LoginPage login = new LoginPage(hospitalManagementService);
+    	InfoDeskPage login = new InfoDeskPage(hospitalManagementService);
     	login.getFrame().setVisible(true);
 	}
 }
