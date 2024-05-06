@@ -173,7 +173,7 @@ public class InfoDeskPage {
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(parsedDate);
                             timestamp = new Timestamp(calendar.getTimeInMillis());
-                            System.out.println(timestamp); 
+                            //System.out.println(timestamp); 
                         } catch (ParseException e1) {
                             e1.printStackTrace();
                         }
@@ -191,8 +191,8 @@ public class InfoDeskPage {
 					        Integer hour = calendar.get(Calendar.HOUR_OF_DAY);
 					        Integer minute = calendar.get(Calendar.MINUTE);
 					       
-					        System.out.print("Hour+minute:");
-					        System.out.println(hour + minute);
+					        //System.out.print("Hour+minute:");
+					        //System.out.println(hour + minute);
 					        filledHours.put(hour+minute,true);
 						}
                         //Appointment{id=1, appointmentDate=2024-05-06 10:00:00.0, doctor='1', clinic=1, patient=12345678901}
@@ -202,10 +202,10 @@ public class InfoDeskPage {
                         		// Lunch break
                         	}else {
                         		Integer sumTime = startHour + startMinute;
-                        		System.out.println("Hour: " + startHour);
-    					        System.out.println("minute:" + startMinute);
-                        		System.out.print("sumTime:");
-    					        System.out.println(sumTime);
+                        		//System.out.println("Hour: " + startHour);
+    					        //System.out.println("minute:" + startMinute);
+                        		//System.out.print("sumTime:");
+    					        //System.out.println(sumTime);
                         		if(!filledHours.containsKey(sumTime)) {
                         			model.addRow(new Object[]{date, startHour.toString() + ":" + (startMinute == 0 ? "00" : "30") , doctor.getFirstName() + " " + doctor.getLastName()});
                         		}
