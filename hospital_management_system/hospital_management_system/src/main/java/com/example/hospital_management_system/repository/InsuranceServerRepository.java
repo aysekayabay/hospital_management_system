@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InsuranceServerRepository extends JpaRepository<InsuranceServer, Long> {
+	
 }
