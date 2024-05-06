@@ -60,6 +60,7 @@ public class ViewPatientAndAddRecordPage {
 	private DefaultTableModel view_patient_treatment_history_model;
 	private JTable add_treatment_added_procedures_table;
 	private JButton add_treatment_add_procedure_button;
+	private JButton view_patient_add_treatment_button;
 
 	private void displayPatientInfo() {
 		view_patient_identity_number_output_label.setText(patient.getSocialNumber());
@@ -70,14 +71,13 @@ public class ViewPatientAndAddRecordPage {
 		Date birthDate = patient.getBirthDate();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String formattedBirthDate = formatter.format(birthDate);
-		System.out.println("'!!!!!!!!!!!!!!!" + formattedBirthDate);
 
 		view_patient_birthdate_output_label.setText(formattedBirthDate);
 		view_patient_birthdate_output_label.setText(patient.getBirthDate().toString());
 		view_patient_address_output_label.setText(patient.getAddress());
 		view_patient_email_output_label.setText(patient.getEmail());
-		
-	    loadPatientTreatmentHistory(patient.getSocialNumber());
+
+		loadPatientTreatmentHistory(patient.getSocialNumber());
 	}
 
 	/**
@@ -105,21 +105,25 @@ public class ViewPatientAndAddRecordPage {
 			add_treatment_procedures_combobox.addItem(procedure.getName());
 		}
 	}
-	
+
 	private void loadPatientTreatmentHistory(String socialNumber) {
-	    List<Treatment> treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNumberOrderByTreatmentDateDesc(socialNumber);
-	    view_patient_treatment_history_model.setRowCount(0);
+		List<Treatment> treatments = hospitalManagementService.getTreatmentRepository()
+				.findByPatientSocialNumberOrderByTreatmentDateDesc(socialNumber);
+		view_patient_treatment_history_model.setRowCount(0);
 
-	    for (Treatment treatment : treatments) {
-	        view_patient_treatment_history_model.addRow(new Object[] {
-	            treatment.getTreatmentDate(),
-	            treatment.getClinic().getName(),
-	            treatment.getDoctorID().getFirstName() + treatment.getDoctorID().getLastName(), 
-	            treatment.getDiagnosis()
-	        });
-	    }
+		for (Treatment treatment : treatments) {
+			if (treatment.getAppointment().getId() == appointment.getId()) {
+				// zaten buna tedavi eklendi
+				view_patient_add_treatment_button.setVisible(false);
+			}
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				String formattedAppointmentDate = dateFormat.format(treatment.getAppointment().getAppointmentDate());
+				view_patient_treatment_history_model
+						.addRow(new Object[] { formattedAppointmentDate, treatment.getClinic().getName(),
+								treatment.getDoctorID().getFirstName() + " " + treatment.getDoctorID().getLastName(),
+								treatment.getDiagnosis() });
+		}
 	}
-
 
 	private void addProcedureToTable() {
 		String selectedProcedure = (String) add_treatment_procedures_combobox.getSelectedItem();
@@ -139,7 +143,7 @@ public class ViewPatientAndAddRecordPage {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 514, 633);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		JPanel view_patient_panel = new JPanel();
 		view_patient_panel.setBackground(Color.WHITE);
@@ -220,7 +224,7 @@ public class ViewPatientAndAddRecordPage {
 		});
 		view_patient_view_details_button.setBounds(262, 522, 218, 30);
 		view_patient_panel.add(view_patient_view_details_button);
-		
+
 		view_patient_treatment_history_model = new DefaultTableModel(new Object[][] {},
 				new String[] { "Tarih", "Klinik", "Doktor", "Tanı" }) {
 			private static final long serialVersionUID = 1L;
@@ -379,8 +383,8 @@ public class ViewPatientAndAddRecordPage {
 				}
 			}
 		});
-		
-		JButton view_patient_add_treatment_button = new JButton("Tedavi Kaydı Ekle");
+
+		view_patient_add_treatment_button = new JButton("Tedavi Kaydı Ekle");
 		view_patient_add_treatment_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				view_patient_panel.setVisible(false);
@@ -389,7 +393,7 @@ public class ViewPatientAndAddRecordPage {
 		});
 		view_patient_add_treatment_button.setBounds(20, 522, 218, 30);
 		view_patient_panel.add(view_patient_add_treatment_button);
-		
+
 		JButton add_treatment_complete_record_button = new JButton("Kaydı Tamamla");
 		add_treatment_complete_record_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
