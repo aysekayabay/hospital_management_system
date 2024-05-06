@@ -49,6 +49,8 @@ public class TreasurerPage {
 	private HospitalManagementService hospitalManagementService;
 	private InsuranceServer insuranceServer;
 	private Treatment current_treatment;
+	
+	private String social_no;
     /**
      * Launch the application.
      */
@@ -58,14 +60,14 @@ public class TreasurerPage {
     }
     
     protected void calculate_price_function() {
-        String social_no = patient_social_no_textField.getText();
-        if (social_no.isEmpty()) {
+        this.social_no = patient_social_no_textField.getText();
+        if (this.social_no.isEmpty()) {
             showErrorMessage("Hasta Kimlik Numarası Boş olamaz");
             current_treatment = null;
             return;
         }
         
-        if (social_no.length() != 11) {
+        if (this.social_no.length() != 11) {
             showErrorMessage("Hasta Kimlik Numarası 11 haneli olmalıdır");
             current_treatment = null;
             return;
@@ -81,7 +83,7 @@ public class TreasurerPage {
         boolean hasInsurance = false;
 
 		for (String person : insuranceServer.getPeopleWithInsurance()) {
-		    if (person.equals(social_no)) {
+		    if (person.equals(this.social_no)) {
 		        hasInsurance = true;
 		        break;
 		    }
@@ -105,22 +107,18 @@ public class TreasurerPage {
                 break;
             }
         }
-        // borç yok
-        // buton disable sonra gelsin
-        // Toplam maliyeti total_price_textField'e yaz
-        total_price_textField.setText(String.valueOf(totalCost));
+        
+        if (totalCost == 0) {
+        	total_price_textField.setText(String.valueOf(totalCost));
+            type_of_pay_combo.setEditable(true);
+        	confirm_payment_button.setEnabled(true);
+        }
     }
 
 
 
     protected void confirm_payment_function() {
-        String social_no = patient_social_no_textField.getText();
-        if (social_no.isEmpty()) {
-            showErrorMessage("Hasta Kimlik Numarası Boş olamaz");
-            return;
-        }
-
-        Patient patient = hospitalManagementService.getPatientRepository().findBySocialNumber(social_no);
+        Patient patient = hospitalManagementService.getPatientRepository().findBySocialNumber(this.social_no);
         if (patient == null) {
             showErrorMessage("Veritabanında bu kimlik numarasına sahip hasta bulunamadı.");
             return;
@@ -193,7 +191,7 @@ public class TreasurerPage {
         patient_social_no_textField = new JTextField();
         patient_social_no_textField.setBounds(178, 97, 150, 20);
         panel.add(patient_social_no_textField);
-
+        
         patient_insurance_label = new JLabel("Sigorta Durumu:");
         patient_insurance_label.setBounds(37, 203, 150, 20);
         panel.add(patient_insurance_label);
@@ -201,6 +199,7 @@ public class TreasurerPage {
         patient_insurance_textField = new JTextField();
         patient_insurance_textField.setBounds(178, 204, 150, 20);
         panel.add(patient_insurance_textField);
+        patient_insurance_textField.setEditable(false);
 
         total_price_label = new JLabel("Toplam Ücret:");
         total_price_label.setBounds(37, 252, 150, 20);
@@ -209,6 +208,7 @@ public class TreasurerPage {
         total_price_textField = new JTextField();
         total_price_textField.setBounds(178, 253, 150, 20);
         panel.add(total_price_textField);
+        total_price_textField.setEditable(false);
 
         type_of_pay_label = new JLabel("Ödeme Türü:");
         type_of_pay_label.setBounds(37, 298, 150, 20);
@@ -218,6 +218,7 @@ public class TreasurerPage {
         type_of_pay_combo = new JComboBox<>(paymentTypes);
         type_of_pay_combo.setBounds(178, 298, 150, 20);
         panel.add(type_of_pay_combo);
+        type_of_pay_combo.setEditable(false);
 
         calculate_price_button = new JButton("Ücreti Hesapla");
         calculate_price_button.setBounds(363, 96, 133, 20);
@@ -236,6 +237,7 @@ public class TreasurerPage {
 				confirm_payment_function();
 			}
 		});
+        confirm_payment_button.setEnabled(false);
     }
 
     public JFrame getFrame() {

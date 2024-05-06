@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,7 +42,7 @@ public class RegistrarPage {
     private JTextField patient_email_textField;
     
     private JLabel patient_sex_label;
-    private JTextField patient_sex_textField;
+    private JComboBox<String> patient_sex_comboBox;
     
     private JLabel patient_birthdate_label;
     private JTextField patient_birthdate_textField;
@@ -73,13 +74,17 @@ public class RegistrarPage {
         JOptionPane.showMessageDialog(null, msg, "Hata", JOptionPane.ERROR_MESSAGE);    	
     }
 	
+	private boolean isNumeric(String str) {
+        return str.matches("\\d+");
+    }
+	
 	private void add_patient_function() {
 	    String socialNo = patient_social_no_textField.getText();
 	    String name = patient_name_textField.getText();
 	    String surName = patient_surname_textField.getText();
 	    String telNo = patient_telno_textField.getText();
 	    String email = patient_email_textField.getText();
-	    String sex = patient_sex_textField.getText();
+	    String sex = (String) patient_sex_comboBox.getSelectedItem();
 	    String address = patient_address_textField.getText();
 	    String birthdate = patient_birthdate_textField.getText();
 	    
@@ -88,12 +93,12 @@ public class RegistrarPage {
 	        return;
 	    }
 	    
-	    if(socialNo.length() != 11){
-	        showErrorMessage("Kimlik numarası 11 haneli olmalıdır!");
+	    if(socialNo.length() != 11 && isNumeric(socialNo)){
+	        showErrorMessage("Kimlik numarası 11 haneli sayılardan oluşmalıdır!");
 	        return;
 	    }
-	    if(telNo.length() != 10){
-	        showErrorMessage("Telefon numarası 10 haneli olmalıdır!");
+	    if(telNo.length() != 10 && isNumeric(telNo)){
+	        showErrorMessage("Telefon numarası 10 haneli sayılardan oluşmalıdır!");
 	        return;
 	    }
 	    if(birthdate.length() != 10){
@@ -121,7 +126,7 @@ public class RegistrarPage {
 	    Patient patient = new Patient(socialNo, name, surName, sex, address, sqlDate, email, telNo);
 	    hospitalManagementService.getPatientRepository().save(patient);
 
-        showErrorMessage("oldu");
+        JOptionPane.showMessageDialog(null, "Hasta Kaydı Eklendi.", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/**
@@ -174,28 +179,29 @@ public class RegistrarPage {
         panel.add(patient_surname_textField);
 
         patient_telno_label = new JLabel("Telefon:");
-        patient_telno_label.setBounds(37, 183, 100, 20);
+        patient_telno_label.setBounds(255, 154, 100, 20);
         panel.add(patient_telno_label);
 
         patient_telno_textField = new JTextField();
-        patient_telno_textField.setBounds(135, 184, 100, 20);
+        patient_telno_textField.setBounds(353, 155, 100, 20);
         panel.add(patient_telno_textField);
         
         patient_email_label = new JLabel("Email:");
-        patient_email_label.setBounds(255, 154, 100, 20);
+        patient_email_label.setBounds(37, 183, 100, 20);
         panel.add(patient_email_label);
 
         patient_email_textField = new JTextField();
-        patient_email_textField.setBounds(353, 155, 100, 20);
+        patient_email_textField.setBounds(135, 184, 318, 20);
         panel.add(patient_email_textField);
 
         patient_sex_label = new JLabel("Cinsiyet:");
         patient_sex_label.setBounds(255, 96, 100, 20);
         panel.add(patient_sex_label);
 
-        patient_sex_textField = new JTextField();
-        patient_sex_textField.setBounds(353, 97, 100, 20);
-        panel.add(patient_sex_textField);
+        String[] sexTypes = {"Kadın", "Erkek", "Diğer"};
+        patient_sex_comboBox = new JComboBox<>(sexTypes);
+        patient_sex_comboBox.setBounds(353, 97, 100, 20);
+        panel.add(patient_sex_comboBox);
 
         patient_birthdate_label = new JLabel("Doğum Tarihi:");
         patient_birthdate_label.setBounds(255, 125, 100, 20);
