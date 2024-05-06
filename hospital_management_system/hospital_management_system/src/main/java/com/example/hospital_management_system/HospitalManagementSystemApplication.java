@@ -68,7 +68,7 @@ public class HospitalManagementSystemApplication implements CommandLineRunner {
 //           window.getFrame().setVisible(true);
 //        } 
 
-    	InfoDeskPage login = new InfoDeskPage(hospitalManagementService);
+    	LoginPage login = new LoginPage(hospitalManagementService);
     	login.getFrame().setVisible(true);
 	}
 }
