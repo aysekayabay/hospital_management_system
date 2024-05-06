@@ -120,6 +120,8 @@ public class RegistrarPage {
 
 	    Patient patient = new Patient(socialNo, name, surName, sex, address, sqlDate, email, telNo);
 	    hospitalManagementService.getPatientRepository().save(patient);
+
+        showErrorMessage("oldu");
 	}
 
 	/**
@@ -180,11 +182,11 @@ public class RegistrarPage {
         panel.add(patient_telno_textField);
         
         patient_email_label = new JLabel("Email:");
-        patient_email_label.setBounds(37, 212, 100, 20);
+        patient_email_label.setBounds(255, 154, 100, 20);
         panel.add(patient_email_label);
 
         patient_email_textField = new JTextField();
-        patient_email_textField.setBounds(135, 213, 100, 20);
+        patient_email_textField.setBounds(353, 155, 100, 20);
         panel.add(patient_email_textField);
 
         patient_sex_label = new JLabel("Cinsiyet:");
@@ -204,11 +206,11 @@ public class RegistrarPage {
         panel.add(patient_birthdate_textField);
         
         patient_address_label = new JLabel("Adres:");
-        patient_address_label.setBounds(255, 154, 100, 20);
+        patient_address_label.setBounds(37, 213, 100, 20);
         panel.add(patient_address_label);
 
         patient_address_textField = new JTextField();
-        patient_address_textField.setBounds(353, 155, 100, 200);
+        patient_address_textField.setBounds(135, 213, 318, 20);
         panel.add(patient_address_textField);
         
         // Onayla butonu

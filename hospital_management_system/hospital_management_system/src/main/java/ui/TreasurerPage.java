@@ -105,7 +105,8 @@ public class TreasurerPage {
                 break;
             }
         }
-
+        // borç yok
+        // buton disable sonra gelsin
         // Toplam maliyeti total_price_textField'e yaz
         total_price_textField.setText(String.valueOf(totalCost));
     }
