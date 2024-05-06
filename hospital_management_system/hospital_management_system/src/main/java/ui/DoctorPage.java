@@ -136,7 +136,7 @@ public class DoctorPage {
         calendar.set(Calendar.MILLISECOND, 0);
 
         // Set to yesterday for testing purposes
-        calendar.add(Calendar.DATE, -2);
+        // calendar.add(Calendar.DATE, -2);
         Date startDate = calendar.getTime();  // Start of today
 
         // Set to the end of yesterday for testing purposes
