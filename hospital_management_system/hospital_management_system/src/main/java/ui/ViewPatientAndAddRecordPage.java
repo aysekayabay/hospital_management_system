@@ -151,6 +151,10 @@ public class ViewPatientAndAddRecordPage {
 		if (selectedRow != -1) {
 			add_treatment_added_procedures_model.removeRow(selectedRow);
 		}
+	}	
+	
+	public static boolean testRequiredProcedAdded(DefaultTableModel tableModel) {
+		return tableModel.getRowCount() > 0;
 	}
 
 	public static boolean testReportContent(String report) {
@@ -176,7 +180,7 @@ public class ViewPatientAndAddRecordPage {
 	    boolean containsNumerical = false;
 
 	    // Check if the string is empty
-	    if (diagnosis.isEmpty()) {
+	    if (diagnosis.isEmpty() || diagnosis.isBlank()) {
 	        isEmptyString = true;
 	    }
 
@@ -566,10 +570,9 @@ public class ViewPatientAndAddRecordPage {
 				// Reçete checkbox'ı işaretliyse
 				if (add_treatment_prescription_checkbox.isSelected()) {
 					treatment.setPrescription(prescription);
-					if (prescription.isEmpty()) {
+					if (prescription.isEmpty() || prescription.isBlank()) {
 						prescriptionNotEmpty = false;
 					}
-
 				}
 				
 				// Rapor checkbox'ı işaretliyse
@@ -578,7 +581,7 @@ public class ViewPatientAndAddRecordPage {
 					reportResult = testReportContent(report);
 				}
 
-				if (reportResult && prescriptionNotEmpty && testDiagnosisContent(diagnosis)) {
+				if (reportResult && prescriptionNotEmpty && testDiagnosisContent(diagnosis) && testRequiredProcedAdded(add_treatment_added_procedures_model)) {
 					// Tedaviyi kaydet
 					Treatment savedTreatment = hospitalManagementService.getTreatmentRepository().save(treatment);
 
@@ -621,6 +624,10 @@ public class ViewPatientAndAddRecordPage {
 							JOptionPane.ERROR_MESSAGE);
 				} else if(!testDiagnosisContent(diagnosis)) {
 					JOptionPane.showMessageDialog(frame, "Tanı boş bırakılmamalıdır veya sayı içermemelidir.", "Hata",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				else if(!testRequiredProcedAdded(add_treatment_added_procedures_model)) {
+					JOptionPane.showMessageDialog(frame, "Tedavi kaydına en az bir işlem eklenmiş olmalıdır.", "Hata",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
