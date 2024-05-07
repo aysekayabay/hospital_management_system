@@ -25,8 +25,8 @@ VALUES
     ('Hüseyin', 'Kaya', 'İstanbul', 'treasurer', 1, 'staff2'),
     ('Yavuz', 'Kartal', 'İstanbul', 'registar', 1, 'staff3'),
     ('Zeynep', 'Çelik', 'İstanbul', 'registar', 1, 'staff4'),
-    ('Ali', 'Yıldırım', 'İstanbul', 'information desk', 1, 'staff5'),
-    ('Selin', 'Koç', 'İstanbul', 'information desk', 1, 'staff6');
+    ('Ali', 'Yıldırım', 'İstanbul', 'information_desk', 1, 'staff5'),
+    ('Selin', 'Koç', 'İstanbul', 'information_desk', 1, 'staff6');
 	
 -- Doctor tablosuna veri ekleme
 INSERT INTO Doctor (firstName, lastName, address, specialty, qualification, workingHours, clinicID, password)
