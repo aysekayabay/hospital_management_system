@@ -128,8 +128,10 @@ public class LoginPage {
 			        			RegistrarPage window = new RegistrarPage(hospitalManagementService);
 			        			window.getFrame().setVisible(true);
 			        			frame.dispose();
-			        		} else {
-			        			
+			        		} else if (staff_type.equals("information_desk")) {
+			        			InfoDeskPage window = new InfoDeskPage(hospitalManagementService);
+			        			window.getFrame().setVisible(true);
+			        			frame.dispose();
 			        		}
 		        		}else {
 		        			JOptionPane.showMessageDialog(null, "Id veya şifre hatalı!", "Hata", JOptionPane.ERROR_MESSAGE);
