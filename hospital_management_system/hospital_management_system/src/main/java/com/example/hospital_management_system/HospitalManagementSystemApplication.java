@@ -57,19 +57,7 @@ public class HospitalManagementSystemApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		
-		// Id'si 1 olan doktoru al
-//		long doctorId = 1L;
-//		String password = "doctor1";
-//        Doctor doctor = hospitalManagementService.getDoctorRepository().findByIdAndPassword(doctorId, password);
-//        if (doctor != null) {
-//            // UI'ı başlat ve doktoru gönder
-//           DoctorPage window = new DoctorPage(doctor, hospitalManagementService);
-//           window.getFrame().setVisible(true);
-//        } 
-
     	LoginPage login = new LoginPage(hospitalManagementService);
-    	login.getFrame().setVisible(true);
-		
+    	login.getFrame().setVisible(true);	
 	}
 }
