@@ -109,7 +109,6 @@ public class LoginPage {
 		        		Long id = Long.parseLong(username.substring(2,username.length()));
 		        		Doctor doctor = hospitalManagementService.getDoctorRepository().findById(id).orElse(null);
 		        		if(doctor.getPassword().equals(password)) {
-		        			JOptionPane.showMessageDialog(null, "Doktor girişi başarılı!", "Başarılı", JOptionPane.ERROR_MESSAGE);
 		        			DoctorPage window = new DoctorPage(doctor , hospitalManagementService);
 		        			window.getFrame().setVisible(true);
 		        			frame.dispose();
@@ -120,7 +119,6 @@ public class LoginPage {
 		        		Long id = Long.parseLong(username.substring(2,username.length()));
 		        		Staff staff = hospitalManagementService.getStaffRepository().findById(id).orElse(null);
 		        		if(staff.getPassword().equals(password)) {
-		        			JOptionPane.showMessageDialog(null, "Staff girişi başarılı!", "Başarılı", JOptionPane.ERROR_MESSAGE);
 		        			String staff_type = staff.getStaffType().toString();
 			        		if (staff_type.equals("treasurer")) {
 			        			TreasurerPage window = new TreasurerPage(hospitalManagementService);
