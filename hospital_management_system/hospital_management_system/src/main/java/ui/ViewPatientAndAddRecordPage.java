@@ -156,7 +156,11 @@ public class ViewPatientAndAddRecordPage {
 	public static boolean testRequiredProcedAdded(DefaultTableModel tableModel) {
 		return tableModel.getRowCount() > 0;
 	}
-
+	
+	public static boolean testPrescriptionNotEmpty(String prescription) {
+		return !prescription.isBlank();
+	}
+	
 	public static boolean testReportContentContainsDayWord(String report) {
 		boolean containsDay = false;
 		for (char c : report.toCharArray()) {
@@ -584,9 +588,7 @@ public class ViewPatientAndAddRecordPage {
 				// Reçete checkbox'ı işaretliyse
 				if (add_treatment_prescription_checkbox.isSelected()) {
 					treatment.setPrescription(prescription);
-					if (prescription.isBlank()) {
-						prescriptionNotEmpty = false;
-					}
+					prescriptionNotEmpty = testPrescriptionNotEmpty(prescription);
 				}
 				
 				// Rapor checkbox'ı işaretliyse
