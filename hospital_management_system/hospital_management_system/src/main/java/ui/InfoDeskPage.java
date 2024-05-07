@@ -50,6 +50,7 @@ public class InfoDeskPage {
 		}
 	}
 	
+	// Checking if patient has another appointment in the selected clinic
 	public boolean isClinicAndPatientAccessible(Clinic clinic, Patient patient, Timestamp date) {
 		List<Appointment> appointment = hospitalManagementService.getAppointmentRepository().findByAppointmentDateAfterAndPatientAndClinic(date, patient, clinic);
 	    return appointment.isEmpty();
@@ -380,16 +381,18 @@ public class InfoDeskPage {
 			}
 		});
 
+		
+		// Confirming appointment
 		JButton infoDeskPage_AppointmentConfirm_Button = new JButton("Randevuyu Onayla");
 		infoDeskPage_AppointmentConfirm_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = infoDeskPage_table.getSelectedRow();
-				if (selectedRow != -1) { // Eğer bir satır seçildiyse devam et
+				if (selectedRow != -1) { 
 					String date = infoDeskPage_table.getValueAt(selectedRow, 0).toString();
 					String hour = infoDeskPage_table.getValueAt(selectedRow, 1).toString();
 					String dateTimeString = date + " " + hour;
 
-					// SimpleDateFormat kullanarak bir Date nesnesine çevir
+				
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 					Date dateTime = null;
 					try {
@@ -406,20 +409,19 @@ public class InfoDeskPage {
 					Doctor doctor = hospitalManagementService.getDoctorRepository()
 							.findByFirstNameAndLastName(firstName, lastName);
 
-					// Burada alınan bilgilerle
-					System.out.println(
-							"Onaylanan Randevu Bilgileri: Tarih=" + date + ", Saat=" + hour + ", Doktor=" + doctor);
 					Appointment appointment = new Appointment();
 					appointment.setPatient(patient);
 					appointment.setDoctorID(doctor);
 					appointment.setClinic(doctor.getClinic());
 					appointment.setAppointmentDate(timestamp);
 					
-					if(!isClinicAndPatientAccessible(doctor.getClinic(),patient,timestamp)){
+					if(!isClinicAndPatientAccessible(doctor.getClinic(),patient,timestampNow)){
 						JOptionPane.showMessageDialog(null, "Hastanın halihazırda randevusu var!", "Hata", JOptionPane.ERROR_MESSAGE);
 					}else {
 						hospitalManagementService.getAppointmentRepository().save(appointment);
 						JOptionPane.showMessageDialog(null, "Randevu Kayıt Başarılı!", "Hata", JOptionPane.ERROR_MESSAGE);
+						System.out.println(
+								"Onaylanan Randevu Bilgileri: Tarih=" + date + ", Saat=" + hour + ", Doktor=" + doctor);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Lütfen bir randevu seçin!", "Hata", JOptionPane.ERROR_MESSAGE);
