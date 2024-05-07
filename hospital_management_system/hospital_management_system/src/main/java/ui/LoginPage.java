@@ -94,7 +94,7 @@ public class LoginPage {
 				String username = login_id_txtArea.getText();
 		        String password = login_password_textArea.getText();
 		        
-		        if (username.isEmpty() || password.isEmpty()) {
+		        if (username.isBlank() || password.isBlank()) {
 		            JOptionPane.showMessageDialog(null, "Kullanıcı adı veya şifre alanları boş olamaz!", "Hata", JOptionPane.ERROR_MESSAGE);
 		        } 
 		        
@@ -109,7 +109,7 @@ public class LoginPage {
 		        		Long id = Long.parseLong(username.substring(2,username.length()));
 		        		Doctor doctor = hospitalManagementService.getDoctorRepository().findById(id).orElse(null);
 		        		if(doctor.getPassword().equals(password)) {
-		        			DoctorPage window = new DoctorPage(doctor , hospitalManagementService);
+		        			        			DoctorPage window = new DoctorPage(doctor , hospitalManagementService);
 		        			window.getFrame().setVisible(true);
 		        			frame.dispose();
 		        		}else {
