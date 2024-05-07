@@ -1,7 +1,9 @@
 package com.example.hospital_management_system.repository;
 
 import com.example.hospital_management_system.entity.Appointment;
+import com.example.hospital_management_system.entity.Clinic;
 import com.example.hospital_management_system.entity.Doctor;
+import com.example.hospital_management_system.entity.Patient;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,4 +23,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	@Query("SELECT a FROM Appointment a WHERE a.doctor = :doctor AND DATE(a.appointmentDate) = DATE(:appointmentDate)")
 	List<Appointment> findByDoctorAndAppointmentDate(@Param("doctor") Doctor doctor, @Param("appointmentDate") Timestamp appointmentDate);
 
+	// Verilen date patient ve clinic bilgilerine göre bir sorgu yap. Date olarak sadece bugün ve bugünden sonra olanları al.
+    List<Appointment> findByAppointmentDateAfterAndPatientAndClinic(Timestamp date, Patient patient, Clinic clinic);
 }
