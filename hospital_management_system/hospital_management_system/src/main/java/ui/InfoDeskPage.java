@@ -369,7 +369,7 @@ public class InfoDeskPage {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (infoDeskPage_PatientId_textField.getText().isEmpty()) {
+				if (infoDeskPage_PatientId_textField.getText().isBlank()) {
 					infoDeskPage_PatientId_textField.setForeground(Color.GRAY);
 					infoDeskPage_PatientId_textField.setText("Hasta Kimlik");
 				}
