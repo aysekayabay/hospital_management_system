@@ -136,7 +136,7 @@ public class ViewPatientAndAddRecordPage {
 			String formattedAppointmentDate = dateFormat.format(treatment.getAppointment().getAppointmentDate());
 			view_patient_treatment_history_model
 					.addRow(new Object[] { formattedAppointmentDate, treatment.getClinic().getName(),
-							treatment.getDoctorID().getFirstName() + " "+treatment.getDoctorID().getLastName(),
+							treatment.getDoctorID().getFirstName() + " " + treatment.getDoctorID().getLastName(),
 							treatment.getDiagnosis() });
 		}
 	}
@@ -152,21 +152,21 @@ public class ViewPatientAndAddRecordPage {
 			add_treatment_added_procedures_model.removeRow(selectedRow);
 		}
 	}
-	
+
 	public static boolean testReportContent(String report) {
 		boolean containsNumber = false;
-        boolean containsDay = false;
+		boolean containsDay = false;
 		for (char c : report.toCharArray()) {
-            if (Character.isDigit(c)) {
-                containsNumber = true;
-            }
-            if (c == 'g' || c == 'G' || c == 'ğ' || c == 'Ğ') {
-                if (report.indexOf("gün") != -1 || report.indexOf("Gün") != -1 || report.indexOf("GÜN") != -1) {
-                    containsDay = true;
-                    break;
-                }
-            }
-        }
+			if (Character.isDigit(c)) {
+				containsNumber = true;
+			}
+			if (c == 'g' || c == 'G' || c == 'ğ' || c == 'Ğ') {
+				if (report.indexOf("gün") != -1 || report.indexOf("Gün") != -1 || report.indexOf("GÜN") != -1) {
+					containsDay = true;
+					break;
+				}
+			}
+		}
 		boolean result = containsDay && containsNumber;
 		return result;
 	}
@@ -437,101 +437,90 @@ public class ViewPatientAndAddRecordPage {
 				}
 			}
 		});
-		
+
 		view_patient_print_prescription_label = new JLabel("Reçeteyi İndir");
 		view_patient_print_prescription_label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// Reçete dosyasının oluşturulacağı dizin
-		        String directory = "./";
-		        // Dosyanın adı
-		        String fileName = "recete.txt";
-		        // Reçete içeriği
-		        String prescriptionContent = "HASTA BİLGİLERİ\n"
-		                + "Kimlik No: " + patient.getSocialNumber() + "\n"
-		                + "Ad: " + patient.getFirstName() + "\n"
-		                + "Soyad: " + patient.getLastName() + "\n"
-		                + "Telefon: " + patient.getPhone() + "\n"
-		                + "Cinsiyet: " + patient.getGender() + "\n"
-		                + "Doğum Tarihi: " + view_patient_birthdate_output_label.getText() + "\n"
-		                + "Adres: " + patient.getAddress() + "\n"
-		                + "Email: " + patient.getEmail() + "\n\n"
-		                + "REÇETE BİLGİLERİ\n"
-		                + "Tarih: " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + "\n"
-		                + "Doktor: " + doctor.getFirstName() + " " + doctor.getLastName() + "\n"
-		                + "Reçete: " + docsTreatment.getPrescription() + "\n";
-		        try {
-		            // Dosya yazma işlemi için PrintWriter oluştur
-		            PrintWriter writer = new PrintWriter(directory + fileName);
-		            // Reçete içeriğini dosyaya yaz
-		            writer.println(prescriptionContent);
-		            // PrintWriter'ı kapat
-		            writer.close();
+				String directory = "./";
+				// Dosyanın adı
+				String fileName = "recete.txt";
+				// Reçete içeriği
+				String prescriptionContent = "HASTA BİLGİLERİ\n" + "Kimlik No: " + patient.getSocialNumber() + "\n"
+						+ "Ad: " + patient.getFirstName() + "\n" + "Soyad: " + patient.getLastName() + "\n"
+						+ "Telefon: " + patient.getPhone() + "\n" + "Cinsiyet: " + patient.getGender() + "\n"
+						+ "Doğum Tarihi: " + view_patient_birthdate_output_label.getText() + "\n" + "Adres: "
+						+ patient.getAddress() + "\n" + "Email: " + patient.getEmail() + "\n\n" + "REÇETE BİLGİLERİ\n"
+						+ "Tarih: " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + "\n"
+						+ "Doktor: " + doctor.getFirstName() + " " + doctor.getLastName() + "\n" + "Reçete: "
+						+ docsTreatment.getPrescription() + "\n";
+				try {
+					// Dosya yazma işlemi için PrintWriter oluştur
+					PrintWriter writer = new PrintWriter(directory + fileName);
+					// Reçete içeriğini dosyaya yaz
+					writer.println(prescriptionContent);
+					// PrintWriter'ı kapat
+					writer.close();
 
-		            // Başarılı bir şekilde dosya oluşturulduğunda bir mesaj göster
-		            JOptionPane.showMessageDialog(frame, "Reçete başarıyla oluşturuldu.");
+					// Başarılı bir şekilde dosya oluşturulduğunda bir mesaj göster
+					JOptionPane.showMessageDialog(frame, "Reçete başarıyla oluşturuldu.");
 
-		        } catch (FileNotFoundException ex) {
-		            // Dosya oluşturulurken bir hata oluştuğunda bir hata mesajı göster
-		            JOptionPane.showMessageDialog(frame, "Dosya oluşturulurken bir hata oluştu.", "Hata",
-		                    JOptionPane.ERROR_MESSAGE);
-		            ex.printStackTrace();
-		        }
+				} catch (FileNotFoundException ex) {
+					// Dosya oluşturulurken bir hata oluştuğunda bir hata mesajı göster
+					JOptionPane.showMessageDialog(frame, "Dosya oluşturulurken bir hata oluştu.", "Hata",
+							JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
 			}
 		});
 		view_patient_print_prescription_label.setForeground(SystemColor.textHighlight);
 		view_patient_print_prescription_label.setBounds(144, 562, 94, 13);
 		view_patient_panel.add(view_patient_print_prescription_label);
-		
+
 		view_patient_print_report_label = new JLabel("Raporu İndir");
 		view_patient_print_report_label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// Rapor dosyasının oluşturulacağı dizin
-		        String directory = "./";
-		        // Dosyanın adı
-		        String fileName = "rapor.txt";
-		        // Rapor içeriği
-		        String prescriptionContent = "HASTA BİLGİLERİ\n"
-		                + "Kimlik No: " + patient.getSocialNumber() + "\n"
-		                + "Ad: " + patient.getFirstName() + "\n"
-		                + "Soyad: " + patient.getLastName() + "\n"
-		                + "Telefon: " + patient.getPhone() + "\n"
-		                + "Cinsiyet: " + patient.getGender() + "\n"
-		                + "Doğum Tarihi: " + view_patient_birthdate_output_label.getText() + "\n"
-		                + "Adres: " + patient.getAddress() + "\n"
-		                + "Email: " + patient.getEmail() + "\n\n"
-		                + "RAPOR BİLGİLERİ\n"
-		                + "Tarih: " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + "\n"
-		                + "Doktor: " + doctor.getFirstName() + " " + doctor.getLastName() + "\n"
-		                + "Rapor: " + docsTreatment.getReport() + "\n";
-		        try {
-		            // Dosya yazma işlemi için PrintWriter oluştur
-		            PrintWriter writer = new PrintWriter(directory + fileName);
-		            // Reçete içeriğini dosyaya yaz
-		            writer.println(prescriptionContent);
-		            // PrintWriter'ı kapat
-		            writer.close();
+				String directory = "./";
+				// Dosyanın adı
+				String fileName = "rapor.txt";
+				// Rapor içeriği
+				String prescriptionContent = "HASTA BİLGİLERİ\n" + "Kimlik No: " + patient.getSocialNumber() + "\n"
+						+ "Ad: " + patient.getFirstName() + "\n" + "Soyad: " + patient.getLastName() + "\n"
+						+ "Telefon: " + patient.getPhone() + "\n" + "Cinsiyet: " + patient.getGender() + "\n"
+						+ "Doğum Tarihi: " + view_patient_birthdate_output_label.getText() + "\n" + "Adres: "
+						+ patient.getAddress() + "\n" + "Email: " + patient.getEmail() + "\n\n" + "RAPOR BİLGİLERİ\n"
+						+ "Tarih: " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + "\n"
+						+ "Doktor: " + doctor.getFirstName() + " " + doctor.getLastName() + "\n" + "Rapor: "
+						+ docsTreatment.getReport() + "\n";
+				try {
+					// Dosya yazma işlemi için PrintWriter oluştur
+					PrintWriter writer = new PrintWriter(directory + fileName);
+					// Reçete içeriğini dosyaya yaz
+					writer.println(prescriptionContent);
+					// PrintWriter'ı kapat
+					writer.close();
 
-		            // Başarılı bir şekilde dosya oluşturulduğunda bir mesaj göster
-		            JOptionPane.showMessageDialog(frame, "Rapor başarıyla oluşturuldu.");
+					// Başarılı bir şekilde dosya oluşturulduğunda bir mesaj göster
+					JOptionPane.showMessageDialog(frame, "Rapor başarıyla oluşturuldu.");
 
-		        } catch (FileNotFoundException ex) {
-		            // Dosya oluşturulurken bir hata oluştuğunda bir hata mesajı göster
-		            JOptionPane.showMessageDialog(frame, "Dosya oluşturulurken bir hata oluştu.", "Hata",
-		                    JOptionPane.ERROR_MESSAGE);
-		            ex.printStackTrace();
-		        }
+				} catch (FileNotFoundException ex) {
+					// Dosya oluşturulurken bir hata oluştuğunda bir hata mesajı göster
+					JOptionPane.showMessageDialog(frame, "Dosya oluşturulurken bir hata oluştu.", "Hata",
+							JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
 			}
 		});
 		view_patient_print_report_label.setForeground(SystemColor.textHighlight);
 		view_patient_print_report_label.setBounds(20, 562, 94, 13);
 		view_patient_panel.add(view_patient_print_report_label);
 
-			
 		view_patient_print_prescription_label.setVisible(false);
 		view_patient_print_report_label.setVisible(false);
-		
+
 		view_patient_add_treatment_button = new JButton("Tedavi Kaydı Ekle");
 		view_patient_add_treatment_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -548,7 +537,8 @@ public class ViewPatientAndAddRecordPage {
 				String diagnosis = add_treatment_diagnosis_textfield.getText();
 				String prescription = add_treatment_prescription_textfield.getText();
 				String report = add_treatment_report_textfield.getText();
-
+				boolean reportResult = true;
+				boolean prescriptionNotEmpty = true;
 				// Treatment objesini oluştur
 				Treatment treatment = new Treatment(diagnosis, Timestamp.from(Instant.now()), doctor.getClinic(),
 						doctor, null, appointment, patient);
@@ -556,16 +546,19 @@ public class ViewPatientAndAddRecordPage {
 				// Reçete checkbox'ı işaretliyse
 				if (add_treatment_prescription_checkbox.isSelected()) {
 					treatment.setPrescription(prescription);
+					if (prescription.isEmpty()) {
+						prescriptionNotEmpty = false;
+					}
+
 				}
-				boolean reportResult = true;
+				
 				// Rapor checkbox'ı işaretliyse
 				if (add_treatment_report_checkbox.isSelected()) {
 					treatment.setReport(report);
 					reportResult = testReportContent(report);
 				}
-				
-				
-				if (reportResult) {
+
+				if (reportResult && prescriptionNotEmpty) {
 					// Tedaviyi kaydet
 					Treatment savedTreatment = hospitalManagementService.getTreatmentRepository().save(treatment);
 
@@ -597,13 +590,14 @@ public class ViewPatientAndAddRecordPage {
 								JOptionPane.ERROR_MESSAGE);
 					}
 					// İlgili alanları temizle
-
 					add_treatment_diagnosis_textfield.setText("");
 					add_treatment_prescription_textfield.setText("");
 					add_treatment_report_textfield.setText("");
-				}
-				else {
+				} else if(!reportResult){
 					JOptionPane.showMessageDialog(frame, "Rapor içeriği 'gün' ve sayı değerlerini içermelidir.", "Hata",
+							JOptionPane.ERROR_MESSAGE);
+				} else if(!prescriptionNotEmpty) {
+					JOptionPane.showMessageDialog(frame, "Reçete içeriği seçili durumdayken boş bırakılmamalıdır.", "Hata",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
