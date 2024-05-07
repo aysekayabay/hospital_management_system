@@ -454,7 +454,7 @@ public class InfoDeskPage {
 		infoDeskPage_Date_textField.setColumns(10);
 
 		infoDeskPage_Date_textField.setForeground(Color.GRAY);
-		infoDeskPage_Date_textField.setText("GÜN-AY-YIL");
+		infoDeskPage_Date_textField.setText("YIL-AY-GÜN");
 
 		infoDeskPage_Date_textField.addFocusListener(new FocusListener() {
 			@Override
