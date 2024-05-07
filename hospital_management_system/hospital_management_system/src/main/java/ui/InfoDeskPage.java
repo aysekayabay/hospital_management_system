@@ -346,11 +346,6 @@ public class InfoDeskPage {
 		infoDeskPage_scrollPane.setBounds(10, 114, 523, 297);
 		panel.add(infoDeskPage_scrollPane);
 
-		// Veritabanından alınan verileri modele ekle
-		// Örnek veri
-		model.addRow(new Object[] { "2024-05-05", "09:00", "Dr. Ahmet" });
-		model.addRow(new Object[] { "2024-05-05", "10:00", "Dr. Ayşe" });
-
 		// Tabloyu oluştur ve modele bağla
 		infoDeskPage_table = new JTable(model);
 		infoDeskPage_scrollPane.setViewportView(infoDeskPage_table);
