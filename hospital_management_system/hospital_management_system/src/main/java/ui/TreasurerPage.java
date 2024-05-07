@@ -61,7 +61,7 @@ public class TreasurerPage {
     
     protected void calculate_price_function() {
         this.social_no = patient_social_no_textField.getText();
-        if (this.social_no.isEmpty()) {
+        if (this.social_no.isBlank()) {
             showErrorMessage("Hasta Kimlik Numarası Boş olamaz");
             current_treatment = null;
             return;

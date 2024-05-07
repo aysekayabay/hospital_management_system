@@ -79,7 +79,7 @@ public class RegistrarPage {
     }
 	
 	public static boolean checkSocialNo(String no) {
-		if (no.isEmpty() || no.length() != 11) {
+		if (no.isBlank() || no.length() != 11) {
 			return false;
 		}
 		if (!no.matches("\\d+")) {
@@ -116,7 +116,7 @@ public class RegistrarPage {
 	    String address = patient_address_textField.getText();
 	    String birthdate = patient_birthdate_textField.getText();
 	    
-	    if (name.isEmpty() || surName.isEmpty() || telNo.isEmpty() || sex.isEmpty() || address.isEmpty()) {
+	    if (name.isBlank() || surName.isBlank() || telNo.isBlank() || sex.isBlank() || address.isBlank()) {
 	        showErrorMessage("Tüm alanlar doldurulmalıdır!");
 	        return;
 	    }
