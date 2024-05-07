@@ -136,7 +136,7 @@ public class ViewPatientAndAddRecordPage {
 			String formattedAppointmentDate = dateFormat.format(treatment.getAppointment().getAppointmentDate());
 			view_patient_treatment_history_model
 					.addRow(new Object[] { formattedAppointmentDate, treatment.getClinic().getName(),
-							treatment.getDoctorID().getFirstName() + treatment.getDoctorID().getLastName(),
+							treatment.getDoctorID().getFirstName() + " "+treatment.getDoctorID().getLastName(),
 							treatment.getDiagnosis() });
 		}
 	}
@@ -151,6 +151,24 @@ public class ViewPatientAndAddRecordPage {
 		if (selectedRow != -1) {
 			add_treatment_added_procedures_model.removeRow(selectedRow);
 		}
+	}
+	
+	public static boolean testReportContent(String report) {
+		boolean containsNumber = false;
+        boolean containsDay = false;
+		for (char c : report.toCharArray()) {
+            if (Character.isDigit(c)) {
+                containsNumber = true;
+            }
+            if (c == 'g' || c == 'G' || c == 'ğ' || c == 'Ğ') {
+                if (report.indexOf("gün") != -1 || report.indexOf("Gün") != -1 || report.indexOf("GÜN") != -1) {
+                    containsDay = true;
+                    break;
+                }
+            }
+        }
+		boolean result = containsDay && containsNumber;
+		return result;
 	}
 
 	/**
@@ -539,47 +557,55 @@ public class ViewPatientAndAddRecordPage {
 				if (add_treatment_prescription_checkbox.isSelected()) {
 					treatment.setPrescription(prescription);
 				}
-
+				boolean reportResult = true;
 				// Rapor checkbox'ı işaretliyse
 				if (add_treatment_report_checkbox.isSelected()) {
 					treatment.setReport(report);
+					reportResult = testReportContent(report);
 				}
+				
+				
+				if (reportResult) {
+					// Tedaviyi kaydet
+					Treatment savedTreatment = hospitalManagementService.getTreatmentRepository().save(treatment);
 
-				// Tedaviyi kaydet
-				Treatment savedTreatment = hospitalManagementService.getTreatmentRepository().save(treatment);
+					if (savedTreatment != null) {
+						// Başarılı bir şekilde tedavi kaydedildiğinde bir mesaj göster
+						JOptionPane.showMessageDialog(frame, "Tedavi kaydı başarıyla oluşturuldu.");
 
-				if (savedTreatment != null) {
-					// Başarılı bir şekilde tedavi kaydedildiğinde bir mesaj göster
-					JOptionPane.showMessageDialog(frame, "Tedavi kaydı başarıyla oluşturuldu.");
+						// Seçilen prosedürlerin ID'lerini al ve tedaviye ekle
+						for (int i = 0; i < add_treatment_added_procedures_model.getRowCount(); i++) {
+							String procedureName = (String) add_treatment_added_procedures_model.getValueAt(i, 0);
+							MedicalProcedure procedure = hospitalManagementService.getMedicalProcedureRepository()
+									.findByName(procedureName);
 
-					// Seçilen prosedürlerin ID'lerini al ve tedaviye ekle
-					for (int i = 0; i < add_treatment_added_procedures_model.getRowCount(); i++) {
-						String procedureName = (String) add_treatment_added_procedures_model.getValueAt(i, 0);
-						MedicalProcedure procedure = hospitalManagementService.getMedicalProcedureRepository()
-								.findByName(procedureName);
-
-						if (procedure != null) {
-							// MedicalProcedureTreatment nesnesi oluştur
-							MedicalProcedureTreatment medicalProcedureTreatment = new MedicalProcedureTreatment(
-									procedure, savedTreatment);
-							hospitalManagementService.getMedicalProcedureTreatmentRepository()
-									.save(medicalProcedureTreatment);
+							if (procedure != null) {
+								// MedicalProcedureTreatment nesnesi oluştur
+								MedicalProcedureTreatment medicalProcedureTreatment = new MedicalProcedureTreatment(
+										procedure, savedTreatment);
+								hospitalManagementService.getMedicalProcedureTreatmentRepository()
+										.save(medicalProcedureTreatment);
+							}
 						}
+						loadPatientTreatmentHistory();
+						add_treatment_panel.setVisible(false);
+						view_patient_panel.setVisible(true);
+						view_patient_add_treatment_button.setVisible(false);
+					} else {
+						// Tedavi kaydedilirken bir hata oluştuğunda bir hata mesajı göster
+						JOptionPane.showMessageDialog(frame, "Tedavi kaydı oluşturulurken bir hata oluştu.", "Hata",
+								JOptionPane.ERROR_MESSAGE);
 					}
-					loadPatientTreatmentHistory();
-					add_treatment_panel.setVisible(false);
-					view_patient_panel.setVisible(true);
-					view_patient_add_treatment_button.setVisible(false);
-				} else {
-					// Tedavi kaydedilirken bir hata oluştuğunda bir hata mesajı göster
-					JOptionPane.showMessageDialog(frame, "Tedavi kaydı oluşturulurken bir hata oluştu.", "Hata",
+					// İlgili alanları temizle
+
+					add_treatment_diagnosis_textfield.setText("");
+					add_treatment_prescription_textfield.setText("");
+					add_treatment_report_textfield.setText("");
+				}
+				else {
+					JOptionPane.showMessageDialog(frame, "Rapor içeriği 'gün' ve sayı değerlerini içermelidir.", "Hata",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				// İlgili alanları temizle
-
-				add_treatment_diagnosis_textfield.setText("");
-				add_treatment_prescription_textfield.setText("");
-				add_treatment_report_textfield.setText("");
 			}
 		});
 
