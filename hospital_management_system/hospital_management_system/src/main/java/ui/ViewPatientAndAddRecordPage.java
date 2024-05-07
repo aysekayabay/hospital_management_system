@@ -175,25 +175,34 @@ public class ViewPatientAndAddRecordPage {
 		return result;
 	}
 	
-	public static boolean testDiagnosisContent(String diagnosis) {
+	public static boolean testDiagnosisEmpty(String diagnosis) {
 	    boolean isEmptyString = false;
-	    boolean containsNumerical = false;
 
 	    // Check if the string is empty
 	    if (diagnosis.isBlank()) {
 	        isEmptyString = true;
 	    }
 
+	    // Return true if the string is not empty
+	    return !isEmptyString;
+	}
+	
+	public static boolean testDiagnosisContainsNumeric(String diagnosis) {
+	    boolean containsNumerical = false;
+	    
 	    // Check if the string contains any numerical characters
 	    for (char c : diagnosis.toCharArray()) {
 	        if (Character.isDigit(c)) {
 	            containsNumerical = true;
+	            break;
 	        }
 	    }
 
-	    // Return true if the string is not empty and does not contain numerical characters
-	    return !containsNumerical && !isEmptyString;
+	    // Return true if string does not contain any numeric chars
+	    return !containsNumerical;
 	}
+	
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -581,7 +590,7 @@ public class ViewPatientAndAddRecordPage {
 					reportResult = testReportContent(report);
 				}
 
-				if (reportResult && prescriptionNotEmpty && testDiagnosisContent(diagnosis) && testRequiredProcedAdded(add_treatment_added_procedures_model)) {
+				if (reportResult && prescriptionNotEmpty && testDiagnosisEmpty(diagnosis) && testDiagnosisContainsNumeric(diagnosis) && testRequiredProcedAdded(add_treatment_added_procedures_model)) {
 					// Tedaviyi kaydet
 					Treatment savedTreatment = hospitalManagementService.getTreatmentRepository().save(treatment);
 
@@ -622,11 +631,13 @@ public class ViewPatientAndAddRecordPage {
 				} else if(!prescriptionNotEmpty) {
 					JOptionPane.showMessageDialog(frame, "Reçete içeriği seçili durumdayken boş bırakılmamalıdır.", "Hata",
 							JOptionPane.ERROR_MESSAGE);
-				} else if(!testDiagnosisContent(diagnosis)) {
-					JOptionPane.showMessageDialog(frame, "Tanı boş bırakılmamalıdır veya sayı içermemelidir.", "Hata",
+				} else if(!testDiagnosisEmpty(diagnosis)) {
+					JOptionPane.showMessageDialog(frame, "Tanı boş bırakılmamalıdır.", "Hata",
 							JOptionPane.ERROR_MESSAGE);
-				}
-				else if(!testRequiredProcedAdded(add_treatment_added_procedures_model)) {
+				} else if(!testDiagnosisContainsNumeric(diagnosis)) {
+					JOptionPane.showMessageDialog(frame, "Tanı sayısal değer içermemelidir.", "Hata",
+							JOptionPane.ERROR_MESSAGE);
+				} else if(!testRequiredProcedAdded(add_treatment_added_procedures_model)) {
 					JOptionPane.showMessageDialog(frame, "Tedavi kaydına en az bir işlem eklenmiş olmalıdır.", "Hata",
 							JOptionPane.ERROR_MESSAGE);
 				}
