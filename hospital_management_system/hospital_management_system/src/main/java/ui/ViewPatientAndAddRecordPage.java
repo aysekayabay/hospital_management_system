@@ -3,6 +3,8 @@ package ui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.SystemColor;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -35,6 +37,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class ViewPatientAndAddRecordPage {
 
@@ -61,6 +67,10 @@ public class ViewPatientAndAddRecordPage {
 	private DefaultTableModel view_patient_treatment_history_model;
 	private JTable add_treatment_added_procedures_table;
 	private JButton add_treatment_add_procedure_button;
+	private JButton view_patient_add_treatment_button;
+	private JLabel view_patient_print_prescription_label;
+	private JLabel view_patient_print_report_label;
+	private Treatment docsTreatment;
 
 	private void displayPatientInfo() {
 		view_patient_identity_number_output_label.setText(patient.getSocialNumber());
@@ -71,14 +81,12 @@ public class ViewPatientAndAddRecordPage {
 		Date birthDate = patient.getBirthDate();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String formattedBirthDate = formatter.format(birthDate);
-		System.out.println("'!!!!!!!!!!!!!!!" + formattedBirthDate);
-
 		view_patient_birthdate_output_label.setText(formattedBirthDate);
 		view_patient_birthdate_output_label.setText(patient.getBirthDate().toString());
 		view_patient_address_output_label.setText(patient.getAddress());
 		view_patient_email_output_label.setText(patient.getEmail());
-		
-	    loadPatientTreatmentHistory();
+
+		loadPatientTreatmentHistory();
 	}
 
 	/**
@@ -90,7 +98,8 @@ public class ViewPatientAndAddRecordPage {
 		this.doctor = doctor;
 		this.appointment = appointment;
 		this.patient = patient;
-		this.treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNumberOrderByTreatmentDateDesc(patient.getSocialNumber());
+		this.treatments = hospitalManagementService.getTreatmentRepository()
+				.findByPatientSocialNumberOrderByTreatmentDateDesc(patient.getSocialNumber());
 		initialize();
 		displayPatientInfo();
 		loadProceduresComboBox();
@@ -107,21 +116,30 @@ public class ViewPatientAndAddRecordPage {
 			add_treatment_procedures_combobox.addItem(procedure.getName());
 		}
 	}
-	
-	private void loadPatientTreatmentHistory() {
-		this.treatments = hospitalManagementService.getTreatmentRepository().findByPatientSocialNumberOrderByTreatmentDateDesc(patient.getSocialNumber());
-	    view_patient_treatment_history_model.setRowCount(0);
-	    
-	    for (Treatment treatment : treatments) {
-	        view_patient_treatment_history_model.addRow(new Object[] {
-	            treatment.getTreatmentDate(),
-	            treatment.getClinic().getName(),
-	            treatment.getDoctorID().getFirstName() + treatment.getDoctorID().getLastName(), 
-	            treatment.getDiagnosis()
-	        });
-	    }
-	}
 
+	private void loadPatientTreatmentHistory() {
+		this.treatments = hospitalManagementService.getTreatmentRepository()
+				.findByPatientSocialNumberOrderByTreatmentDateDesc(patient.getSocialNumber());
+		view_patient_treatment_history_model.setRowCount(0);
+
+		for (Treatment treatment : treatments) {
+			if (treatment.getAppointment().getId() == appointment.getId()) {
+				// zaten buna tedavi eklendi
+				view_patient_add_treatment_button.setVisible(false);
+				view_patient_add_treatment_button.setVisible(false);
+				view_patient_print_prescription_label.setVisible(true);
+				view_patient_print_report_label.setVisible(true);
+				docsTreatment = treatment;
+			}
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			String formattedAppointmentDate = dateFormat.format(treatment.getAppointment().getAppointmentDate());
+			view_patient_treatment_history_model
+					.addRow(new Object[] { formattedAppointmentDate, treatment.getClinic().getName(),
+							treatment.getDoctorID().getFirstName() + treatment.getDoctorID().getLastName(),
+							treatment.getDiagnosis() });
+		}
+	}
 
 	private void addProcedureToTable() {
 		String selectedProcedure = (String) add_treatment_procedures_combobox.getSelectedItem();
@@ -141,7 +159,7 @@ public class ViewPatientAndAddRecordPage {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 514, 633);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		JPanel view_patient_panel = new JPanel();
 		view_patient_panel.setBackground(Color.WHITE);
@@ -217,27 +235,32 @@ public class ViewPatientAndAddRecordPage {
 
 		JButton view_patient_view_details_button = new JButton("Tedavi Detaylarını Görüntüle");
 		view_patient_view_details_button.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        int selectedRow = view_patient_treatments_table.getSelectedRow();
-		        if (selectedRow != -1) {
-		            // Assuming `treatments` is accessible here, and its indices are aligned with table rows
-		            Treatment selectedTreatment = treatments.get(selectedRow);
-		            if (selectedTreatment != null) {
-		                // Code to display treatment details
-		                TreatmentDetailsPage window = new TreatmentDetailsPage(doctor, selectedTreatment, patient, hospitalManagementService);
-		                window.getFrame().setVisible(true);
-		            } else {
-		                JOptionPane.showMessageDialog(frame, "Tedavi Detayları Bulunamadı", "Hata", JOptionPane.ERROR_MESSAGE);
-		            }
-		        } else {
-		            JOptionPane.showMessageDialog(frame, "Lütfen Detaylarını Görüntülemek İstediğiniz Tedaviyi Seçiniz.", "Seçim Yok", JOptionPane.WARNING_MESSAGE);
-		        }
-		    }
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = view_patient_treatments_table.getSelectedRow();
+				if (selectedRow != -1) {
+					// Assuming `treatments` is accessible here, and its indices are aligned with
+					// table rows
+					Treatment selectedTreatment = treatments.get(selectedRow);
+					if (selectedTreatment != null) {
+						// Code to display treatment details
+						TreatmentDetailsPage window = new TreatmentDetailsPage(doctor, selectedTreatment, patient,
+								hospitalManagementService);
+						window.getFrame().setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(frame, "Tedavi Detayları Bulunamadı", "Hata",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				} else {
+					JOptionPane.showMessageDialog(frame,
+							"Lütfen Detaylarını Görüntülemek İstediğiniz Tedaviyi Seçiniz.", "Seçim Yok",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
 		});
 
 		view_patient_view_details_button.setBounds(262, 522, 218, 30);
 		view_patient_panel.add(view_patient_view_details_button);
-		
+
 		view_patient_treatment_history_model = new DefaultTableModel(new Object[][] {},
 				new String[] { "Tarih", "Klinik", "Doktor", "Tanı" }) {
 			private static final long serialVersionUID = 1L;
@@ -397,7 +420,101 @@ public class ViewPatientAndAddRecordPage {
 			}
 		});
 		
-		JButton view_patient_add_treatment_button = new JButton("Tedavi Kaydı Ekle");
+		view_patient_print_prescription_label = new JLabel("Reçeteyi İndir");
+		view_patient_print_prescription_label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Reçete dosyasının oluşturulacağı dizin
+		        String directory = "./";
+		        // Dosyanın adı
+		        String fileName = "recete.txt";
+		        // Reçete içeriği
+		        String prescriptionContent = "HASTA BİLGİLERİ\n"
+		                + "Kimlik No: " + patient.getSocialNumber() + "\n"
+		                + "Ad: " + patient.getFirstName() + "\n"
+		                + "Soyad: " + patient.getLastName() + "\n"
+		                + "Telefon: " + patient.getPhone() + "\n"
+		                + "Cinsiyet: " + patient.getGender() + "\n"
+		                + "Doğum Tarihi: " + view_patient_birthdate_output_label.getText() + "\n"
+		                + "Adres: " + patient.getAddress() + "\n"
+		                + "Email: " + patient.getEmail() + "\n\n"
+		                + "REÇETE BİLGİLERİ\n"
+		                + "Tarih: " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + "\n"
+		                + "Doktor: " + doctor.getFirstName() + " " + doctor.getLastName() + "\n"
+		                + "Reçete: " + docsTreatment.getPrescription() + "\n";
+		        try {
+		            // Dosya yazma işlemi için PrintWriter oluştur
+		            PrintWriter writer = new PrintWriter(directory + fileName);
+		            // Reçete içeriğini dosyaya yaz
+		            writer.println(prescriptionContent);
+		            // PrintWriter'ı kapat
+		            writer.close();
+
+		            // Başarılı bir şekilde dosya oluşturulduğunda bir mesaj göster
+		            JOptionPane.showMessageDialog(frame, "Reçete başarıyla oluşturuldu.");
+
+		        } catch (FileNotFoundException ex) {
+		            // Dosya oluşturulurken bir hata oluştuğunda bir hata mesajı göster
+		            JOptionPane.showMessageDialog(frame, "Dosya oluşturulurken bir hata oluştu.", "Hata",
+		                    JOptionPane.ERROR_MESSAGE);
+		            ex.printStackTrace();
+		        }
+			}
+		});
+		view_patient_print_prescription_label.setForeground(SystemColor.textHighlight);
+		view_patient_print_prescription_label.setBounds(144, 562, 94, 13);
+		view_patient_panel.add(view_patient_print_prescription_label);
+		
+		view_patient_print_report_label = new JLabel("Raporu İndir");
+		view_patient_print_report_label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Rapor dosyasının oluşturulacağı dizin
+		        String directory = "./";
+		        // Dosyanın adı
+		        String fileName = "rapor.txt";
+		        // Rapor içeriği
+		        String prescriptionContent = "HASTA BİLGİLERİ\n"
+		                + "Kimlik No: " + patient.getSocialNumber() + "\n"
+		                + "Ad: " + patient.getFirstName() + "\n"
+		                + "Soyad: " + patient.getLastName() + "\n"
+		                + "Telefon: " + patient.getPhone() + "\n"
+		                + "Cinsiyet: " + patient.getGender() + "\n"
+		                + "Doğum Tarihi: " + view_patient_birthdate_output_label.getText() + "\n"
+		                + "Adres: " + patient.getAddress() + "\n"
+		                + "Email: " + patient.getEmail() + "\n\n"
+		                + "RAPOR BİLGİLERİ\n"
+		                + "Tarih: " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + "\n"
+		                + "Doktor: " + doctor.getFirstName() + " " + doctor.getLastName() + "\n"
+		                + "Rapor: " + docsTreatment.getReport() + "\n";
+		        try {
+		            // Dosya yazma işlemi için PrintWriter oluştur
+		            PrintWriter writer = new PrintWriter(directory + fileName);
+		            // Reçete içeriğini dosyaya yaz
+		            writer.println(prescriptionContent);
+		            // PrintWriter'ı kapat
+		            writer.close();
+
+		            // Başarılı bir şekilde dosya oluşturulduğunda bir mesaj göster
+		            JOptionPane.showMessageDialog(frame, "Rapor başarıyla oluşturuldu.");
+
+		        } catch (FileNotFoundException ex) {
+		            // Dosya oluşturulurken bir hata oluştuğunda bir hata mesajı göster
+		            JOptionPane.showMessageDialog(frame, "Dosya oluşturulurken bir hata oluştu.", "Hata",
+		                    JOptionPane.ERROR_MESSAGE);
+		            ex.printStackTrace();
+		        }
+			}
+		});
+		view_patient_print_report_label.setForeground(SystemColor.textHighlight);
+		view_patient_print_report_label.setBounds(20, 562, 94, 13);
+		view_patient_panel.add(view_patient_print_report_label);
+
+			
+		view_patient_print_prescription_label.setVisible(false);
+		view_patient_print_report_label.setVisible(false);
+		
+		view_patient_add_treatment_button = new JButton("Tedavi Kaydı Ekle");
 		view_patient_add_treatment_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				view_patient_panel.setVisible(false);
@@ -406,7 +523,7 @@ public class ViewPatientAndAddRecordPage {
 		});
 		view_patient_add_treatment_button.setBounds(20, 522, 218, 30);
 		view_patient_panel.add(view_patient_add_treatment_button);
-		
+
 		JButton add_treatment_complete_record_button = new JButton("Kaydı Tamamla");
 		add_treatment_complete_record_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

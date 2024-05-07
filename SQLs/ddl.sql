@@ -1,5 +1,5 @@
 -- ENUM tipini oluştur
-CREATE TYPE StaffType AS ENUM ('treasurer', 'registar', 'information desk');
+CREATE TYPE StaffType AS ENUM ('treasurer', 'registar', 'information_desk');
 
 -- InsuranceServer tablosu
 CREATE TABLE InsuranceServer (
@@ -107,3 +107,5 @@ CREATE TABLE MedicalProcedureTreatment (
     treatmentID INT REFERENCES Treatment(id) NOT NULL,
     PRIMARY KEY (medicalProcedureID, treatmentID)
 );
+
+
