@@ -11,15 +11,12 @@ public class LoginPageTests {
 
     @Test
     public void testID() {
-        // LoginPage sınıfını oluştur
-        LoginPage loginPage = new LoginPage(null); // HospitalManagementService parametresini null olarak geçiyorum çünkü bu testte kullanmayacağım
-        
-        // 3 karakterden kısa bir ID girdisi
-        loginPage.getLogin_id_txtArea().setText("Dr"); // 2 karakter
+    	
+        LoginPage loginPage = new LoginPage(null);
+        loginPage.getLogin_id_txtArea().setText("Dr");
         assertFalse(loginPage.getLogin_id_txtArea().getText().length() >= 3);
-        
-        // 3 karakter veya daha uzun bir ID girdisi
-        loginPage.getLogin_id_txtArea().setText("Dr1"); // 3 karakter
+     
+        loginPage.getLogin_id_txtArea().setText("Dr1"); 
         assertTrue(loginPage.getLogin_id_txtArea().getText().length() >= 3);
     }
 

@@ -43,6 +43,8 @@ public class LoginPage {
 		this.hospitalManagementService = hospitalManagementService;
 		initialize();
 	}
+	
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -149,4 +151,10 @@ public class LoginPage {
 		
 		
 	}
+	public JTextField getLogin_id_txtArea() {
+        return login_id_txtArea;
+    }
+
+
+
 }
