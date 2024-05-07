@@ -180,7 +180,7 @@ public class ViewPatientAndAddRecordPage {
 	    boolean containsNumerical = false;
 
 	    // Check if the string is empty
-	    if (diagnosis.isEmpty() || diagnosis.isBlank()) {
+	    if (diagnosis.isBlank()) {
 	        isEmptyString = true;
 	    }
 
@@ -570,7 +570,7 @@ public class ViewPatientAndAddRecordPage {
 				// Reçete checkbox'ı işaretliyse
 				if (add_treatment_prescription_checkbox.isSelected()) {
 					treatment.setPrescription(prescription);
-					if (prescription.isEmpty() || prescription.isBlank()) {
+					if (prescription.isBlank()) {
 						prescriptionNotEmpty = false;
 					}
 				}
