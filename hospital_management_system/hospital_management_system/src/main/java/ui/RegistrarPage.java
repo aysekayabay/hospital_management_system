@@ -78,6 +78,34 @@ public class RegistrarPage {
         return str.matches("\\d+");
     }
 	
+	public static boolean checkSocialNo(String no) {
+		if (no.isEmpty() || no.length() != 11) {
+			return false;
+		}
+		if (!no.matches("\\d+")) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static Date getBirthDate(String date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        formatter.setLenient(false);
+        Date utilDate;
+        try {
+            utilDate = formatter.parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
+        return utilDate;
+    }
+	
+	public static boolean checkEmailFormat(String email) {
+	    String regex = ".*@.*\\.com.*";
+
+	    return email.matches(regex);
+	}
+	
 	private void add_patient_function() {
 	    String socialNo = patient_social_no_textField.getText();
 	    String name = patient_name_textField.getText();
@@ -88,33 +116,33 @@ public class RegistrarPage {
 	    String address = patient_address_textField.getText();
 	    String birthdate = patient_birthdate_textField.getText();
 	    
-	    if (socialNo.isEmpty() || name.isEmpty() || surName.isEmpty() || telNo.isEmpty() || email.isEmpty() || sex.isEmpty() || address.isEmpty() || birthdate.isEmpty()) {
+	    if (name.isEmpty() || surName.isEmpty() || telNo.isEmpty() || sex.isEmpty() || address.isEmpty()) {
 	        showErrorMessage("Tüm alanlar doldurulmalıdır!");
 	        return;
 	    }
 	    
-	    if(socialNo.length() != 11 && isNumeric(socialNo)){
-	        showErrorMessage("Kimlik numarası 11 haneli sayılardan oluşmalıdır!");
+	    if(checkSocialNo(socialNo)){
+	        showErrorMessage("Kimlik numarası 11 haneli olacak şekilde numaralardan oluşmalıdır!");
 	        return;
 	    }
+	    
+	    if(checkEmailFormat(email)) {
+	    	showErrorMessage("Email ***@***.com*** formatında olmalıdır!");
+	        return;
+	    }
+	    
 	    if(telNo.length() != 10 && isNumeric(telNo)){
 	        showErrorMessage("Telefon numarası 10 haneli sayılardan oluşmalıdır!");
 	        return;
 	    }
-	    if(birthdate.length() != 10){
-	        showErrorMessage("Doğum tarihi 10 haneli olmalıdır!");
-	        return;
+	    
+	    Date utilDate = getBirthDate(birthdate); 
+
+	    if (utilDate == null) {
+	    	showErrorMessage("Doğum tarihi 10 haneli ve dd.MM.yyyy formatında olmalıdır!");
+	    	return;
 	    }
 	    
-	    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-	    Date utilDate;
-	    try {
-	        utilDate = formatter.parse(birthdate);
-	    } catch (ParseException e) {
-	        showErrorMessage("Doğum tarihi formatı dd.MM.yyyy olmalıdır!");
-	        return;
-	    }
-
 	    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
 	    Patient existingPatient = hospitalManagementService.getPatientRepository().findBySocialNumber(socialNo);
