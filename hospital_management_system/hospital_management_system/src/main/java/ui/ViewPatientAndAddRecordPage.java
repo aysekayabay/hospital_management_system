@@ -170,6 +170,26 @@ public class ViewPatientAndAddRecordPage {
 		boolean result = containsDay && containsNumber;
 		return result;
 	}
+	
+	public static boolean testDiagnosisContent(String diagnosis) {
+	    boolean isEmptyString = false;
+	    boolean containsNumerical = false;
+
+	    // Check if the string is empty
+	    if (diagnosis.isEmpty()) {
+	        isEmptyString = true;
+	    }
+
+	    // Check if the string contains any numerical characters
+	    for (char c : diagnosis.toCharArray()) {
+	        if (Character.isDigit(c)) {
+	            containsNumerical = true;
+	        }
+	    }
+
+	    // Return true if the string is not empty and does not contain numerical characters
+	    return !containsNumerical && !isEmptyString;
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -558,7 +578,7 @@ public class ViewPatientAndAddRecordPage {
 					reportResult = testReportContent(report);
 				}
 
-				if (reportResult && prescriptionNotEmpty) {
+				if (reportResult && prescriptionNotEmpty && testDiagnosisContent(diagnosis)) {
 					// Tedaviyi kaydet
 					Treatment savedTreatment = hospitalManagementService.getTreatmentRepository().save(treatment);
 
@@ -598,6 +618,9 @@ public class ViewPatientAndAddRecordPage {
 							JOptionPane.ERROR_MESSAGE);
 				} else if(!prescriptionNotEmpty) {
 					JOptionPane.showMessageDialog(frame, "Reçete içeriği seçili durumdayken boş bırakılmamalıdır.", "Hata",
+							JOptionPane.ERROR_MESSAGE);
+				} else if(!testDiagnosisContent(diagnosis)) {
+					JOptionPane.showMessageDialog(frame, "Tanı boş bırakılmamalıdır veya sayı içermemelidir.", "Hata",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

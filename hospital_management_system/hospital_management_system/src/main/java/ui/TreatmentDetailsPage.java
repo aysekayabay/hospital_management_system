@@ -71,7 +71,7 @@ public class TreatmentDetailsPage {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 514, 633);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -172,7 +172,7 @@ public class TreatmentDetailsPage {
 		treatment_details_subtitle_label.setBounds(10, 196, 480, 13);
 		panel.add(treatment_details_subtitle_label);
 		
-		treatment_details_procedures_table = new JTable();
+		treatment_details_procedures_table = new JTable(new NonEditableModel(null, 0));
 		treatment_details_procedures_table.setBounds(37, 230, 424, 265);
 		panel.add(treatment_details_procedures_table);
 	}

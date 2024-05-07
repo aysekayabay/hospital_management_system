@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.swing.JButton;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import com.example.hospital_management_system.entity.Appointment;
 import com.example.hospital_management_system.entity.Doctor;
 import com.example.hospital_management_system.entity.Patient;
 
+@SuppressWarnings("serial")
 //Define a custom table model that does not allow cell editing
 class NonEditableModel extends DefaultTableModel {
 
@@ -99,18 +101,19 @@ public class DoctorPage {
         doctor_title_label.setFont(new Font("Tahoma", Font.BOLD, 16));
         frame.add(doctor_title_label, BorderLayout.NORTH);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        frame.add(panel, BorderLayout.CENTER);
+        JPanel doctor_page_panel = new JPanel();
+        doctor_page_panel.setLayout(new BorderLayout());
+        frame.add(doctor_page_panel, BorderLayout.CENTER);
+        doctor_page_panel.setBackground(Color.WHITE);
 
         JLabel lblHeading = new JLabel("Bugünün Randevuları", SwingConstants.CENTER);
         lblHeading.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        panel.add(lblHeading, BorderLayout.NORTH);
+        doctor_page_panel.add(lblHeading, BorderLayout.NORTH);
 
         String[] columnNames = {"Saat", "Hasta Kimlik No", "Hasta Adı Soyadı"};
         table = new JTable(new NonEditableModel(columnNames, 0));  // Use the custom model here
         JScrollPane scrollPane = new JScrollPane(table);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        doctor_page_panel.add(scrollPane, BorderLayout.CENTER);
 
         JButton doctor_view_patient_button = new JButton("Hasta Bilgilerini Görüntüle");
         doctor_view_patient_button.addActionListener(e -> {
@@ -125,7 +128,7 @@ public class DoctorPage {
                 JOptionPane.showMessageDialog(frame, "Lütfen bir randevu seçin.", "Hata", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(doctor_view_patient_button, BorderLayout.SOUTH);
+        doctor_page_panel.add(doctor_view_patient_button, BorderLayout.SOUTH);
     }
 
     private List<Appointment> fetchTodaysAppointments() {
@@ -136,7 +139,7 @@ public class DoctorPage {
         calendar.set(Calendar.MILLISECOND, 0);
 
         // Set to yesterday for testing purposes
-        // calendar.add(Calendar.DATE, -2);
+        // calendar.add(Calendar.DATE, -1);
         Date startDate = calendar.getTime();  // Start of today
 
         // Set to the end of yesterday for testing purposes
@@ -184,5 +187,10 @@ public class DoctorPage {
 
 	public JFrame getFrame() {
 		return frame;
+	}
+
+	public Object getTable() {
+		// TODO Auto-generated method stub
+		return table;
 	}
 }
