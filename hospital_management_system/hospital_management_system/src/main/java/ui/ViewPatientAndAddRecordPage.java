@@ -157,13 +157,9 @@ public class ViewPatientAndAddRecordPage {
 		return tableModel.getRowCount() > 0;
 	}
 
-	public static boolean testReportContent(String report) {
-		boolean containsNumber = false;
+	public static boolean testReportContentContainsDayWord(String report) {
 		boolean containsDay = false;
 		for (char c : report.toCharArray()) {
-			if (Character.isDigit(c)) {
-				containsNumber = true;
-			}
 			if (c == 'g' || c == 'G' || c == 'ğ' || c == 'Ğ') {
 				if (report.indexOf("gün") != -1 || report.indexOf("Gün") != -1 || report.indexOf("GÜN") != -1) {
 					containsDay = true;
@@ -171,8 +167,17 @@ public class ViewPatientAndAddRecordPage {
 				}
 			}
 		}
-		boolean result = containsDay && containsNumber;
-		return result;
+		return containsDay;
+	}
+	
+	public static boolean testReportContentContainsNumberInfo(String report) {
+		boolean containsNumber = false;
+		for (char c : report.toCharArray()) {
+			if (Character.isDigit(c)) {
+				containsNumber = true;
+			}
+		}
+		return containsNumber;
 	}
 	
 	public static boolean testDiagnosisEmpty(String diagnosis) {
@@ -587,7 +592,7 @@ public class ViewPatientAndAddRecordPage {
 				// Rapor checkbox'ı işaretliyse
 				if (add_treatment_report_checkbox.isSelected()) {
 					treatment.setReport(report);
-					reportResult = testReportContent(report);
+					reportResult = testReportContentContainsDayWord(report) &&  testReportContentContainsNumberInfo(report);
 				}
 
 				if (reportResult && prescriptionNotEmpty && testDiagnosisEmpty(diagnosis) && testDiagnosisContainsNumeric(diagnosis) && testRequiredProcedAdded(add_treatment_added_procedures_model)) {

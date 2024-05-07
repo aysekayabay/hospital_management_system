@@ -12,10 +12,17 @@ import ui.ViewPatientAndAddRecordPage;
 class TreatmentTests {
 	
 	@Test
-    public void testReportContent() {
-        boolean result = ViewPatientAndAddRecordPage.testReportContent("Hasta 3 gün dinlenmelidir.");
-        assertThat(result).as("Rapor içeriği bir sayı ve 'gün' kelimesini içermelidir.").isTrue();
+    public void testReportContentContainsDayWord() {
+        boolean result = ViewPatientAndAddRecordPage.testReportContentContainsDayWord("Hasta 3 gün dinlenmelidir.");
+        assertThat(result).as("Rapor içeriği 'gün' kelimesini içermelidir.").isTrue();
     }
+	
+	@Test
+    public void testReportContentContainsNumberInfo() {
+        boolean result = ViewPatientAndAddRecordPage.testReportContentContainsNumberInfo("Hasta 3 gün dinlenmelidir.");
+        assertThat(result).as("Rapor içeriği bir sayı bilgisi içermelidir.").isTrue();
+    }
+
 
 	@Test
     void testRequiredProcedAdded() {
