@@ -12,11 +12,10 @@ public class LoginPageTests {
     @Test
     public void testID() {
     	
-        LoginPage loginPage = new LoginPage(null);
-        loginPage.getLogin_id_txtArea().setText("Dr");
-        assertFalse(loginPage.getLogin_id_txtArea().getText().length() >= 3);
-     
-        loginPage.getLogin_id_txtArea().setText("Dr1"); 
-        assertTrue(loginPage.getLogin_id_txtArea().getText().length() >= 3);
+        boolean result1 = LoginPage.isIdFormatSuitible("141");
+        boolean result2 = LoginPage.isIdFormatSuitible("1");
+        
+        assertThat(result1 || result2).isFalse();
+        
     }
 }
