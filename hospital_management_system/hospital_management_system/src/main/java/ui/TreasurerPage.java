@@ -118,6 +118,10 @@ public class TreasurerPage {
             }
         }
         
+        if (hasInsurance) {
+        	totalCost = (totalCost * 3) / 4;
+        }
+        
         total_price_textField.setText("0");
         if (totalCost > 0) {
         	total_price_textField.setText(String.valueOf(totalCost));
