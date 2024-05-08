@@ -47,7 +47,7 @@ public class LoginPage {
 	public static boolean isIdFormatSuitible(String ID) {
 		if(ID.length() < 3) return false;
 		String staff = ID.substring(0,2);
-		if(staff != "St" && staff != "Dr") return false;
+		if(!staff.equalsIgnoreCase("St") && !staff.equalsIgnoreCase("Dr")) return false;
 				
 		return true;
 	}
@@ -106,7 +106,7 @@ public class LoginPage {
 		        } 
 		        
 		        if(!isIdFormatSuitible(username)) {
-		        	 JOptionPane.showMessageDialog(null, "Dr veya St ile başlayan idnizi girin! 3'ten az", "Hata", JOptionPane.ERROR_MESSAGE);
+		        	 JOptionPane.showMessageDialog(null, "Dr veya St ile başlayan idnizi girin!", "Hata", JOptionPane.ERROR_MESSAGE);
 		        }else { 
 		        	String user = username.substring(0,2);
 		        	System.out.println(user);
