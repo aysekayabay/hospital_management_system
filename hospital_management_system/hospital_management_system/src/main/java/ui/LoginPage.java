@@ -44,6 +44,13 @@ public class LoginPage {
 		initialize();
 	}
 	
+	public static boolean isIdFormatSuitible(String ID) {
+		if(ID.length() < 3) return false;
+		String staff = ID.substring(0,2);
+		if(staff != "St" || staff != "Dr") return false;
+				
+		return true;
+	}
 
 
 	/**
@@ -98,7 +105,7 @@ public class LoginPage {
 		            JOptionPane.showMessageDialog(null, "Kullanıcı adı veya şifre alanları boş olamaz!", "Hata", JOptionPane.ERROR_MESSAGE);
 		        } 
 		        
-		        if(username.length() < 3) {
+		        if(!isIdFormatSuitible(username)) {
 		        	 JOptionPane.showMessageDialog(null, "Dr veya St ile başlayan idnizi girin! 3'ten az", "Hata", JOptionPane.ERROR_MESSAGE);
 		        }else { 
 		        	String user = username.substring(0,2);
