@@ -47,7 +47,7 @@ public class LoginPage {
 	public static boolean isIdFormatSuitible(String ID) {
 		if(ID.length() < 3) return false;
 		String staff = ID.substring(0,2);
-		if(staff != "St" || staff != "Dr") return false;
+		if(staff != "St" && staff != "Dr") return false;
 				
 		return true;
 	}
