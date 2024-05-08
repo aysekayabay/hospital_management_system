@@ -156,6 +156,8 @@ public class TreasurerPage {
 		hospitalManagementService.getTreatmentRepository().save(current_treatment);
 
         JOptionPane.showMessageDialog(null, "Ödeme Onaylandı", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
+        
+        confirm_payment_button.setEnabled(false);
     }
 
 

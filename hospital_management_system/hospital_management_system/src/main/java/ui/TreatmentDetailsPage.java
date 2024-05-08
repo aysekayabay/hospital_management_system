@@ -141,10 +141,10 @@ public class TreatmentDetailsPage {
 	            // Check if the treatment has a prescription
 	            if (treatment != null && treatment.getPrescription() != null) {
 	                // Display the prescription in a popup dialog
-	                JOptionPane.showMessageDialog(frame, treatment.getPrescription(), "Prescription", JOptionPane.INFORMATION_MESSAGE);
+	                JOptionPane.showMessageDialog(frame, treatment.getPrescription(), "Reçete", JOptionPane.INFORMATION_MESSAGE);
 	            } else {
 	                // Display a message if there is no prescription available
-	                JOptionPane.showMessageDialog(frame, "No prescription available for this treatment.", "Prescription", JOptionPane.ERROR_MESSAGE);
+	                JOptionPane.showMessageDialog(frame, "Reçete bulunamadı.", "Reçete", JOptionPane.ERROR_MESSAGE);
 	            }
 	        }
 	    });
@@ -159,10 +159,10 @@ public class TreatmentDetailsPage {
 	            // Check if the treatment has a report
 	            if (treatment != null && treatment.getReport() != null) {
 	                // Display the report in a popup dialog
-	                JOptionPane.showMessageDialog(frame, treatment.getReport(), "Report", JOptionPane.INFORMATION_MESSAGE);
+	                JOptionPane.showMessageDialog(frame, treatment.getReport(), "Rapor", JOptionPane.INFORMATION_MESSAGE);
 	            } else {
 	                // Display a message if there is no report available
-	                JOptionPane.showMessageDialog(frame, "No report available for this treatment.", "Report", JOptionPane.ERROR_MESSAGE);
+	                JOptionPane.showMessageDialog(frame, "Rapor bulunamadı.", "Rapor", JOptionPane.ERROR_MESSAGE);
 	            }
 	        }
 	    });
