@@ -121,17 +121,17 @@ public class RegistrarPage {
 	        return;
 	    }
 	    
-	    if(checkSocialNo(socialNo)){
+	    if(!checkSocialNo(socialNo)){
 	        showErrorMessage("Kimlik numarası 11 haneli olacak şekilde numaralardan oluşmalıdır!");
 	        return;
 	    }
 	    
-	    if(checkEmailFormat(email)) {
+	    if(!checkEmailFormat(email)) {
 	    	showErrorMessage("Email ***@***.com*** formatında olmalıdır!");
 	        return;
 	    }
 	    
-	    if(telNo.length() != 10 && isNumeric(telNo)){
+	    if(telNo.length() != 10 && !isNumeric(telNo)){
 	        showErrorMessage("Telefon numarası 10 haneli sayılardan oluşmalıdır!");
 	        return;
 	    }
