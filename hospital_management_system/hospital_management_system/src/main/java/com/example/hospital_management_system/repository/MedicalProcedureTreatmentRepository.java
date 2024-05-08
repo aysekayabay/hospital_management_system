@@ -12,6 +12,6 @@ public interface MedicalProcedureTreatmentRepository extends JpaRepository<Medic
 
     MedicalProcedureTreatment findByMedicalProcedureIdAndTreatmentId(Long medicalProcedureId, Long treatmentId);
     MedicalProcedureTreatment findByMedicalProcedureId(Long medicalProcedureId);
-    MedicalProcedureTreatment findByTreatmentId(Long treatmentId);
+    List<MedicalProcedureTreatment> findByTreatmentId(Long treatmentId);
     List<MedicalProcedureTreatment> findListByTreatmentId(Long treatmentId);
 }

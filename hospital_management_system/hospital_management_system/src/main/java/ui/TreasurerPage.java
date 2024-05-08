@@ -96,19 +96,30 @@ public class TreasurerPage {
         for (Treatment treatment : treatments) {
             if (treatment.getPayment() == null) {
             	current_treatment = treatment;
-                Long treatment_id = current_treatment.getId();
-                MedicalProcedureTreatment procedureTreatment = hospitalManagementService.getMedicalProcedureTreatmentRepository().findByTreatmentId(treatment_id);
-                if (procedureTreatment != null) {
-                    MedicalProcedure procedure = procedureTreatment.getMedicalProcedure();
-                    if (procedure != null) {
-                        totalCost += procedure.getCost();
-                    }
-                }
-                break;
+            	break;
             }
         }
         
-        if (totalCost == 0) {
+        if (current_treatment != null) {
+        	Long treatment_id = current_treatment.getId();
+        	System.out.println(treatment_id);
+            List<MedicalProcedureTreatment> procedureTreatment = hospitalManagementService.getMedicalProcedureTreatmentRepository().findByTreatmentId(treatment_id);
+            if (procedureTreatment != null) {
+                for (MedicalProcedureTreatment currentProcedureTreatment : procedureTreatment) {
+                	MedicalProcedure procedure = currentProcedureTreatment.getMedicalProcedure();
+                	
+                    if (procedure != null) {
+                        totalCost += procedure.getCost();
+                    } else {
+                    	System.out.println("NULL GELDİ");
+                    }
+                }
+            	
+            }
+        }
+        
+        total_price_textField.setText("0");
+        if (totalCost > 0) {
         	total_price_textField.setText(String.valueOf(totalCost));
             type_of_pay_combo.setEditable(true);
         	confirm_payment_button.setEnabled(true);
