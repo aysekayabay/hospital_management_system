@@ -1,8 +1,8 @@
 -- InsuranceServer tablosuna veri ekleme
 INSERT INTO InsuranceServer (name, peopleWithInsurance)
 VALUES 
-    ('Sigorta Şirketi 1', ARRAY['01234567980', '12345678901', '98765432102', '11111111103', '22222222204', '33333333305', '44444444406', '55555555507', '66666666608', '77777777709', '88888888810']),
-    ('Sigorta Şirketi 2', ARRAY['90909090919', '45678912311', '78912345612', '99999999913', '00000000014', '12121212115', '34343434316', '56565656517', '78787878718', '01234567980', '23232323220']);
+    ('Sigorta Şirketi 1', ARRAY['23456789012', '12345678901', '34567890123', '45678901234']),
+    ('Sigorta Şirketi 2', ARRAY['56789012345', '78901234567', '89012345678', '90123456789']);
 
 -- Policlinic tablosuna veri ekleme
 INSERT INTO Policlinic (name, location, collaboratedInsuranceServerID)

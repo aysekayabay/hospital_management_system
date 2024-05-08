@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS clinic;
 DROP TABLE IF EXISTS policlinic;
 DROP TABLE IF EXISTS patient;
 DROP TABLE IF EXISTS insuranceserver;
+DROP TYPE IF EXISTS stafftype;
+
 
 -- ENUM tipini oluştur
 CREATE TYPE StaffType AS ENUM ('treasurer', 'registar', 'information_desk');
