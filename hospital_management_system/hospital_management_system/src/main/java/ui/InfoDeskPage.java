@@ -90,7 +90,7 @@ public class InfoDeskPage {
 	}
 
 	public static boolean isValidDateFormat(String date) {
-		// XX-XX-XXXX formatında bir tarih metni için uygun regex
+		// XXXX-XX-XX formatında bir tarih metni için uygun regex
 		String regex = "\\d{4}-\\d{2}-\\d{2}";
 		return date.matches(regex);
 	}
@@ -146,7 +146,7 @@ public class InfoDeskPage {
 				}
 
 				if (!isValidDateFormat(date)) {
-					JOptionPane.showMessageDialog(null, "Uygun formatta tarih girin! XXXX-XX-XX", "Hata",
+					JOptionPane.showMessageDialog(null, "Uygun formatta tarih girin! yyyy-AA-gg", "Hata",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -163,6 +163,7 @@ public class InfoDeskPage {
 				if (yearEntered < yearNow || monthEntered < monthNow || dayEntered < dayNow) {
 					JOptionPane.showMessageDialog(null, "Geçmiş bir tarih girmeyiniz!", "Hata",
 							JOptionPane.ERROR_MESSAGE);
+					return;
 
 				}
 				
