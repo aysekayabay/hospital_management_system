@@ -19,5 +19,4 @@ public class LoginPageTests {
         loginPage.getLogin_id_txtArea().setText("Dr1"); 
         assertTrue(loginPage.getLogin_id_txtArea().getText().length() >= 3);
     }
-
 }

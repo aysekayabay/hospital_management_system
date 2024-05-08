@@ -89,7 +89,7 @@ public class InfoDeskPage {
 		return frame;
 	}
 
-	private boolean isValidDateFormat(String date) {
+	public static boolean isValidDateFormat(String date) {
 		// XX-XX-XXXX formatında bir tarih metni için uygun regex
 		String regex = "\\d{4}-\\d{2}-\\d{2}";
 		return date.matches(regex);
