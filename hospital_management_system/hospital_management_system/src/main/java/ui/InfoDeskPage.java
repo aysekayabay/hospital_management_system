@@ -415,7 +415,7 @@ public class InfoDeskPage {
 						JOptionPane.showMessageDialog(null, "Hastanın halihazırda randevusu var!", "Hata", JOptionPane.ERROR_MESSAGE);
 					}else {
 						hospitalManagementService.getAppointmentRepository().save(appointment);
-						JOptionPane.showMessageDialog(null, "Randevu Kayıt Başarılı!", "Hata", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Randevu Kayıt Başarılı!", "Bilgi", JOptionPane.INFORMATION_MESSAGE);
 						System.out.println(
 								"Onaylanan Randevu Bilgileri: Tarih=" + date + ", Saat=" + hour + ", Doktor=" + doctor);
 					}
