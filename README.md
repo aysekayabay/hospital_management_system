@@ -23,11 +23,11 @@ Bu proje, bir hastanenin günlük operasyonlarını yönetmek için tasarlanmı�
 
 ## Katkıda Bulunanlar
 
-- Ayşe Kayabay
-- Furkan Salman
-- İbrahim Şahin
-- Ezgi Sevi
-- Melih Tuna İpek
+- [Ayşe Kayabay](https://github.com/aysekayabay)
+- [Furkan Salman](https://github.com/Frknslmn50)
+- [İbrahim Şahin](https://github.com/balanceton)
+- [Ezgi Sevi](https://github.com/ecisev16)
+- [Melih Tuna İpek](https://github.com/MulahTeni)
 
 ## Lisans
 
