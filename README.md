@@ -1,6 +1,6 @@
 # Hastane Yönetim Sistemi
 
-Bu proje, Java Spring ve Swing kütüphaneleri kullanılarak geliştirilen bir hastane yönetim sistemidir. Sistemi kullananlar Ayşe Kayabay, Furkan Salman, İbrahim Şahin, Ezgi Sevi ve Melih Tuna İpek'tir.
+Bu proje, Java Spring ve Swing kütüphaneleri kullanılarak geliştirilen bir hastane yönetim sistemidir. Sistemi kullananlar Ayşe Kayabay, Furkan Salman, İbrahim Şahin, Ezgi Sevi ve Melih Tuna İpek'tir. Proje detaylarının yer aldığı rapora [linkten](https://docs.google.com/document/d/1vCnisIn-uIZ_nFHDPo4-2O7BNQyOzCsaftoyuo21WS0/edit?usp=sharing) erişebilirsiniz.
 
 ## Proje Açıklaması
 
