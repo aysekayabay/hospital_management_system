@@ -1,27 +1,27 @@
-# Hastane Yönetim Sistemi
+# Hospital Management System
 
-Bu proje, Java Spring ve Swing kütüphaneleri kullanılarak geliştirilen bir hastane yönetim sistemidir. Sistemi kullananlar Ayşe Kayabay, Furkan Salman, İbrahim Şahin, Ezgi Sevi ve Melih Tuna İpek'tir. Proje detaylarının yer aldığı rapora [linkten](https://docs.google.com/document/d/1vCnisIn-uIZ_nFHDPo4-2O7BNQyOzCsaftoyuo21WS0/edit?usp=sharing) erişebilirsiniz.
+This project is a hospital management system developed using Java Spring and Swing libraries. The system is used by Ayşe Kayabay, Furkan Salman, İbrahim Şahin, Ezgi Sevi, and Melih Tuna İpek. You can access the detailed project report via this [link].(https://docs.google.com/document/d/1vCnisIn-uIZ_nFHDPo4-2O7BNQyOzCsaftoyuo21WS0/edit?usp=sharing)
 
-## Proje Açıklaması
+## Project Description
 
-Bu proje, bir hastanenin günlük operasyonlarını yönetmek için tasarlanmıştır. Sistem, lokal bilgisayarlarda kullanılmak üzere tasarlanmıştır ve hasta girişi, kaydı, tedavi ödemesi, yeni hasta kaydı, doktor tedavi eklemesi gibi temel fonksiyonları içerir.
+This project is designed to manage the daily operations of a hospital. It is intended to be used on local computers and includes core functions such as patient admission, registration, treatment payment, new patient entry, and doctor treatment updates.
 
-## Kurulum
+## Installation
 
-1. Proje dosyalarını bilgisayarınıza indirin veya klonlayın.
-2. Java Development Kit (JDK) ve Maven yüklü olduğundan emin olun.
-3. Proje dizininde terminal veya komut istemcisini açın.
-4. `mvn clean install` komutunu çalıştırarak projeyi derleyin.
-5. Derleme tamamlandığında, `java -jar target/hospital_management_system.jar` komutunu kullanarak uygulamayı başlatın.
+1. Download or clone the project files to your computer.
+2. Ensure that Java Development Kit (JDK) and Maven are installed.
+3. Open a terminal or command prompt in the project directory.
+4. Run the command mvn clean install to build the project.
+5. Once the build is complete, launch the application using java -jar target/hospital_management_system.jar.
 
-## Kullanım
+## Usage
 
-1. Uygulama başlatıldığında, ana ekran görüntülenecektir.
-2. Ana ekranda, kullanıcılar hasta kaydı, yeni hasta ekleme, doktor tedavi ekleme gibi işlevleri seçebilir.
-3. Her işlev için uygun form veya arayüz sağlanmaktadır.
-4. İşlemler tamamlandıktan sonra, kullanıcılar sistemden çıkabilir veya başka bir işlem seçebilir.
+1. When the application starts, the main screen will be displayed.
+2. From the main screen, users can choose functions such as patient registration, adding a new patient, and adding doctor treatments.
+3. Appropriate forms or interfaces are provided for each function.
+4. After completing the operations, users can exit the system or select another function.
 
-## Katkıda Bulunanlar
+## Contributors
 
 - [Ayşe Kayabay](https://github.com/aysekayabay)
 - [Furkan Salman](https://github.com/Frknslmn50)
@@ -29,6 +29,6 @@ Bu proje, bir hastanenin günlük operasyonlarını yönetmek için tasarlanmı�
 - [Ezgi Sevi](https://github.com/ecisev16)
 - [Melih Tuna İpek](https://github.com/MulahTeni)
 
-## Lisans
+## License
 
-Bu proje MIT Lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakınız.
+This project is licensed under the MIT License. For more information, see the [LICENSE](LICENSE) file.
