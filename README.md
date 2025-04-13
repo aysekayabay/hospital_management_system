@@ -1,6 +1,6 @@
 # Hospital Management System
 
-This project is a hospital management system developed using Java Spring and Swing libraries. The system is used by Ayşe Kayabay, Furkan Salman, İbrahim Şahin, Ezgi Sevi, and Melih Tuna İpek. You can access the detailed project report via this [link].(https://docs.google.com/document/d/1vCnisIn-uIZ_nFHDPo4-2O7BNQyOzCsaftoyuo21WS0/edit?usp=sharing)
+This project is a hospital management system developed using Java Spring and Swing libraries. The system is used by Ayşe Kayabay, Furkan Salman, İbrahim Şahin, Ezgi Sevi, and Melih Tuna İpek. You can access the detailed project report via this [link](https://docs.google.com/document/d/1vCnisIn-uIZ_nFHDPo4-2O7BNQyOzCsaftoyuo21WS0/edit?usp=sharing).
 
 ## Project Description
 
